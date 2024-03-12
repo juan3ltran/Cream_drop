@@ -7,14 +7,15 @@
 // Initializing functions
 std::map<int, int> InitializeGrid(std::map<int, int> Grid, int Ngrid, int partsNsqrt);
 int getRandomInt(int max);
+std::map<int, int> randomWalk(std::map<int, int> RWGrid, int Ngrid);
 
 
 int main(int argc, char **argv){
     double cupSize = 100; // Length of the sides of the domain (cup)
     double partR = 1.; // Particle radius, basically size of a cell in the grid
     int Ngrid = cupSize/partR; // Amount of cells per row of Grid
-    int partNsqrt = 5; // Square root number of initial particles (to guarantee an square)
-    int steps = 300; // Total number of 'steps'. One step = one particle RW
+    int partNsqrt = 20; // Square root number of initial particles (to guarantee an square)
+    int steps = 10000; // Total number of 'steps'. One step = one particle RW
 
     std::map<int, int> RWGrid; // Map to store particle information
 
@@ -60,9 +61,9 @@ std::map<int, int> randomWalk(std::map<int, int> RWGrid, int Ngrid){
     int cell = it->first, particles = it->second; // Get cell information
 
     // possible options for particle to move to (E,W,N,S)
-    std::vector<int> options = {cell+1, cell-1, cell-Ngrid, cell+Ngrid};
+    std::vector<int> options = {1, -1, Ngrid, -Ngrid};
 
-    int newCell = options[getRandomInt(options.size()-1)]; // Cell to which to move next
+    int newCell = cell + options[getRandomInt(options.size()-1)]; // Cell to which to move next
 
     RWGrid[cell]--; // Remove 1 particle from this cell
     if (RWGrid[cell] == 0){
