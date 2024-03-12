@@ -1,0 +1,18 @@
+Codigo de entropia:
+Consiste en tener las posiciones de las particulas en un instate de tiempo dado y apartir de ello
+calcular la entropia.
+la implementacion consiste en tener en un archivo.dat o punto .txt  con las posiciones (x,y) de las 
+particulas donde cada fila represente una particula y cada columna su posicion x e y respectivamente
+ej:
+4.033401756630872370e+01 5.820290797217671042e+01
+5.635212013890905780e+01 6.013421396940731967e+01
+5.281346280664693893e+01 5.346568653603971200e+01
+
+de esta forma a partir de ejecutar ./entropia < datos_posicones.dat se obtiene el valor de entropia
+el codigo fue pensado para que el tamaño de las divisiones o grid usado sea adaptable ya que un 
+punto del problema pide cambiar este tamaño y verificar una relacion, ademas de poder adaptar el 
+tamaño del plano xy a tener en cuenta, sin embargo cuenta con el problema de ser dependiente al 
+formato de la entrada de datos, la compatibilidad con la simulacion de difusion, ademas 
+por construccion no tiene en cuenta particulas fuera del rango ajustado.
+
+Codigo de Random Walk:

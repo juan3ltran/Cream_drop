@@ -3,10 +3,10 @@ import numpy as np
 
 # Parámetros de la distribución normal
 media = 50
-desviacion = 15
+desviacion = 40
 
 # Número de puntos a dispersar
-num_puntos = 100
+num_puntos = 400
 
 # Generar coordenadas siguiendo una distribución normal
 x = np.random.normal(media, desviacion, num_puntos)
@@ -14,7 +14,7 @@ y = np.random.normal(media, desviacion, num_puntos)
 
 # Guardar los puntos en un archivo .dat
 data = np.column_stack((x, y))
-np.savetxt(f'data/datos{desviacion}.dat', data, fmt='%.18e', delimiter=' ', newline='\n')
+np.savetxt(f'datos_prueba/datos{desviacion}.dat', data, fmt='%.18e', delimiter=' ', newline='\n')
 
 
 # Crear la figura y el eje
