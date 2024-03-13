@@ -1,8 +1,9 @@
 #include <iostream>
 #include <random>
+#include <vector>
 
 
-double getRandomInt(int max);
+int getRandomInt(int max);
 
 class Particle {
 private:
@@ -29,7 +30,7 @@ public:
 
     // Nuevo método para mover la posición aleatoriamente
     void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max) {
-        std::vector<std::pair<int, int>> possibleMoves;
+        std::vector<std::pair<double, double>> possibleMoves;
 
         // Agrega movimientos posibles teniendo en cuenta los límites
         if (x > x_min) possibleMoves.emplace_back(-delta, 0); // Izquierda
@@ -37,7 +38,7 @@ public:
         if (y > y_min) possibleMoves.emplace_back(0, -delta); // Arriba
         if (y < y_max) possibleMoves.emplace_back(0, delta); // Abajo
         if (x > x_min && y > y_min) possibleMoves.emplace_back(-delta, -delta); // Diagonal superior izquierda
-        if (x > 0 && y < y_max) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
+        if (x > x_min && y < y_max) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
         if (x < x_max && y > y_min) possibleMoves.emplace_back(delta, -delta); // Diagonal superior derecha
         if (x < x_max && y < y_max) possibleMoves.emplace_back(delta, delta); // Diagonal inferior derecha
 
@@ -49,23 +50,44 @@ public:
 };
 
 int main() {
-    Particle ball(0, 0); // Inicia en (0,0).
+
+    std::vector<Particle> balls;
+    int t_final = 100000;
+    int N_particles = 100;
+    double x_min = -10;
+    double x_max = 10;
+    double y_min = -10;
+    double y_max = 10;
+
+    // Inicializa n objetos de la clase Position y los añade al vector
+    for (int i = 0; i < N_particles; ++i) {
+        balls.emplace_back(0, 0); // Cada partícula inicia en (0,0)
+    }
     
     std::cout << 'x'<<'\t'<< 'y'<<std::endl;
-    for (int i = 0; i < 500; i++)
+
+    int coin;
+    for (int i = 0; i < t_final; i++)
     {
+        coin = getRandomInt(N_particles); //Selecciona que particula se movera
+        balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);
         
-        std::cout << ball.getX()<<'\t'<< ball.getY()<<std::endl;
-        ball.moveRandom(1, -10, 10,-5, 5);
+        if (i==t_final-1) //Imprime la posicion final de todas las particulas
+        {
+            for (auto& ball : balls)
+            {
+                std::cout << ball.getX()<<'\t'<< ball.getY()<<std::endl;
+            }
+        }
+            
     }
 
     return 0;
 }
 
 
-double getRandomInt(int max) {
+int getRandomInt(int max) {
     static std::mt19937 gen(18);
     std::uniform_int_distribution<int> dist_(0, max);
-
     return dist_(gen);
 }
