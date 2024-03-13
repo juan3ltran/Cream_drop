@@ -52,14 +52,13 @@ public:
 int main() {
 
     std::vector<Particle> balls;
+    //Configuracion de parametros
     int t_final = 100000;
     int N_particles = 100;
-    double x_min = -10;
-    double x_max = 10;
-    double y_min = -10;
-    double y_max = 10;
+    double x_min = -10, x_max = 10;
+    double y_min = -10, y_max = 10;
 
-    // Inicializa n objetos de la clase Position y los añade al vector
+    // Inicializa n objetos de la clase Particle y los añade al vector
     for (int i = 0; i < N_particles; ++i) {
         balls.emplace_back(0, 0); // Cada partícula inicia en (0,0)
     }
@@ -67,9 +66,11 @@ int main() {
     std::cout << 'x'<<'\t'<< 'y'<<std::endl;
 
     int coin;
+    /*/double entropy = delta_entropy(old_x, old_y, N_particles, x_min, x_max, y_min, y_max, divisions); */
     for (int i = 0; i < t_final; i++)
     {
         coin = getRandomInt(N_particles); //Selecciona que particula se movera
+ 
         balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);
         
         if (i==t_final-1) //Imprime la posicion final de todas las particulas

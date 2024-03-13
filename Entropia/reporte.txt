@@ -15,4 +15,14 @@ tamaño del plano xy a tener en cuenta, sin embargo cuenta con el problema de se
 formato de la entrada de datos, la compatibilidad con la simulacion de difusion, ademas 
 por construccion no tiene en cuenta particulas fuera del rango ajustado.
 
-Codigo de Random Walk:
+Nuevas implementaciones:
+modificar entropia para que yo pueda pasarle la posicion vieja de una unica particula y me calcule 
+el cambio en la entropia, y que a su vez cuando se llame la primera vez a la funcion calcule la 
+entropia inicial del sistema, es decir :
+1. antes del loop entropia calcula la entropia de todo el arreglo
+    1.1 para ello en el primer llamado entropia crea la matriz de subdivisiones y asigna el conteo 
+        de dichos valores, matriz que posteriormente se usara para comparar cantidades en subdivisiones.
+2. durante el loop entropia calcula el cambio en la entropia
+    2.1 si old_data asigna el mismo indice que new_data entonces no hubo cambio en la entropia,
+        de lo contrario se cambiara el valor del conteo respectivo al indice de old_data, y de new_data 
+        por lo que se calculara el cambio de la entropia en ese caso y se retorna a la simulacion.
