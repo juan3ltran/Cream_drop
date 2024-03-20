@@ -33,14 +33,14 @@ public:
         std::vector<std::pair<double, double>> possibleMoves;
 
         // Agrega movimientos posibles teniendo en cuenta los límites
-        if (x > x_min) possibleMoves.emplace_back(-delta, 0); // Izquierda
-        if (x < x_max) possibleMoves.emplace_back(delta, 0); // Derecha
-        if (y > y_min) possibleMoves.emplace_back(0, -delta); // Arriba
-        if (y < y_max) possibleMoves.emplace_back(0, delta); // Abajo
-        if (x > x_min && y > y_min) possibleMoves.emplace_back(-delta, -delta); // Diagonal superior izquierda
-        if (x > x_min && y < y_max) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
-        if (x < x_max && y > y_min) possibleMoves.emplace_back(delta, -delta); // Diagonal superior derecha
-        if (x < x_max && y < y_max) possibleMoves.emplace_back(delta, delta); // Diagonal inferior derecha
+        if (x > (x_min+delta)) possibleMoves.emplace_back(-delta, 0); // Izquierda
+        if (x < (x_max-delta)) possibleMoves.emplace_back(delta, 0); // Derecha
+        if (y > (y_min+delta)) possibleMoves.emplace_back(0, -delta); // Arriba
+        if (y < (y_max-delta)) possibleMoves.emplace_back(0, delta); // Abajo
+        if (x > (x_min+delta) && y > (y_min+delta)) possibleMoves.emplace_back(-delta, -delta); // Diagonal superior izquierda
+        if (x > (x_min+delta) && y < (y_max-delta)) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
+        if (x < (x_max-delta) && y > (y_min+delta)) possibleMoves.emplace_back(delta, -delta); // Diagonal superior derecha
+        if (x < (x_max-delta) && y < (y_max-delta)) possibleMoves.emplace_back(delta, delta); // Diagonal inferior derecha
 
         if (!possibleMoves.empty()) {
             int index = getRandomInt(possibleMoves.size() - 1);
@@ -53,8 +53,8 @@ int main(int argc, char **argv) {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 21;
-    const  int N_particles = 5;
+    const int t_final = 100000;
+    const  int N_particles = 400;
     const double x_min = -5, x_max = 5;
     const double y_min = -5, y_max = 5;
     const int divisions = 8 ;
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
         old_x = balls[coin].getX();
         old_y = balls[coin].getY();
  
-        balls[coin].moveRandom(0.125, x_min, x_max, y_min, y_max); //Movimiento aleatorio
+        balls[coin].moveRandom(0.5, x_min, x_max, y_min, y_max); //Movimiento aleatorio
         
         // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         new_x = balls[coin].getX();

@@ -8,7 +8,7 @@ void counts(std::vector<std::vector<int>>& grid_counts, double x, double y,
     double y_step = (y_max - y_min) / static_cast<double>(divisions);
 
     //Verifica la posicion dentro de los limites
-        if ((x_min <= x) && (x <= x_max) && (y_min <= y) && (y <= y_max))
+        if ((x_min < x) && (x < x_max) && (y_min < y) && (y < y_max))
         {
             // Calcula el índice de la subdivisión para x e y
             int ix = int((x - x_min) / x_step);

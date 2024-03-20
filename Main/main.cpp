@@ -5,8 +5,8 @@ int main() {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 1000000;
-    const int N_particles = 400;
+    const int t_final = 100;
+    const int N_particles = 50;
     const double x_min = -10, x_max = 10;
     const double y_min = -10, y_max = 10;
     const int divisions = 8;
@@ -28,11 +28,12 @@ int main() {
     {
         
         coin = getRandomInt(N_particles-1); //Selecciona que particula se movera
+        // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         double old_x = balls[coin].getX();
         double old_y = balls[coin].getY();
         balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);        
         ///////////////////////////////////////////
-// %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
+        // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         double new_x = balls[coin].getX();
         double new_y = balls[coin].getY();
         
