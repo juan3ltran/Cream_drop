@@ -3,10 +3,10 @@
 #include <cmath> 
 
 //Function declaration
-void counts(std::vector<std::vector<int>>& particle_counts, double x, double y, const double x_min, 
+void counts(std::vector<std::vector<int>>& grid_counts, double x, double y, const double x_min, 
 const double x_max, const double y_min, const double y_max, int divisions);
 
-double compute_entropy(std::vector<std::vector<int>>& particle_counts, int N_particles);
+double compute_entropy(std::vector<std::vector<int>>& grid_counts, int N_particles);
 
 
 int main(int argc, char **argv) {
@@ -14,10 +14,10 @@ int main(int argc, char **argv) {
     const int N_particles = 400; // Número de partículas
     const double x_min = 0, x_max = 100; // Límites para x
     const double y_min = 0, y_max = 100; // Límites para y
-    const int divisions = 8; // Divisiones en x e y
+    const int divisions = 8; // Subdivisiones de la grilla
 
     // Inicializa una matriz para contar las partículas en cada subdivisión
-    std::vector<std::vector<int>> particle_counts(divisions, std::vector<int>(divisions, 0));
+    std::vector<std::vector<int>> grid_counts(divisions, std::vector<int>(divisions, 0));
 
     // Lee las posiciones de las partículas y cuenta en qué subdivisión caen
     double x, y;
@@ -26,12 +26,12 @@ int main(int argc, char **argv) {
         //Posicion de Particula iesima
         std::cin >> x >> y;
         //Conteo de particula en la subdivision
-        counts(particle_counts, x, y, x_min, x_max, y_min, y_max, divisions);
+        counts(grid_counts, x, y, x_min, x_max, y_min, y_max, divisions);
     }
 
     // Calcula la entropía
     double entropy;
-    entropy = compute_entropy(particle_counts, N_particles);
+    entropy = compute_entropy(grid_counts, N_particles);
 
     std::cout << "Entropía: " << entropy << std::endl;
 
@@ -40,16 +40,16 @@ int main(int argc, char **argv) {
 
 
 //implementacion de funciones
-double compute_entropy(std::vector<std::vector<int>>& particle_counts, int N_particles)
+double compute_entropy(std::vector<std::vector<int>>& grid_counts, int N_particles)
 {
     // Calcula la entropía
     double entropy = 0.0;
-    int divisions = particle_counts.size();
+    int divisions = grid_counts.size();
 
     for (int ix = 0; ix < divisions; ++ix) {
         for (int iy = 0; iy < divisions; ++iy) {
-            if (particle_counts[ix][iy] > 0) {
-                double p = double(particle_counts[ix][iy]) / N_particles;
+            if (grid_counts[ix][iy] > 0) {
+                double p = double(grid_counts[ix][iy]) / N_particles;
                 entropy -= p * log(p);
             }
         }
@@ -57,7 +57,7 @@ double compute_entropy(std::vector<std::vector<int>>& particle_counts, int N_par
     return entropy;
 }
 
-void counts(std::vector<std::vector<int>>& particle_counts, double x, double y, double x_min, 
+void counts(std::vector<std::vector<int>>& grid_counts, double x, double y, double x_min, 
 double x_max, double y_min, double y_max, int divisions)
 {
     //Compute the size of each subdivision
@@ -72,6 +72,6 @@ double x_max, double y_min, double y_max, int divisions)
             int iy = int((y - y_min) / y_step);
 
             // Incrementa el contador para esa subdivisión
-            particle_counts[ix][iy]++;
+            grid_counts[ix][iy]++;
         }
 }
