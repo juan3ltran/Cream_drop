@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 30;
+    const int t_final = 21;
     const  int N_particles = 5;
     const double x_min = -5, x_max = 5;
     const double y_min = -5, y_max = 5;
@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
     {
         
 
-        coin = getRandomInt(N_particles); //Selecciona que particula se movera
+        coin = getRandomInt(N_particles-1); //Selecciona que particula se movera
 
         // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         old_x = balls[coin].getX();

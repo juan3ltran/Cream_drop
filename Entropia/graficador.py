@@ -19,7 +19,7 @@ def dispercion(data_path):
     ax[0].set_title('Entropia en funcion del tiempo')
 
     ax[1].scatter(datos['t'], diferencia, label = 'Entropia 1', s=5)
-    ax[1].set_yscale('log')
+    #ax[1].set_yscale('log')
     ax[1].set_xlabel("Tiempo")
     ax[1].set_ylabel("Dif relativa Entropia")
     ax[1].legend()
