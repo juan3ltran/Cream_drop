@@ -15,7 +15,15 @@ tamaño del plano xy a tener en cuenta, sin embargo cuenta con el problema de se
 formato de la entrada de datos, la compatibilidad con la simulacion de difusion, ademas 
 por construccion no tiene en cuenta particulas fuera del rango ajustado.
 
-Nuevas implementaciones:
+Error en funcion walk.cpp:
+    en el metodo para seleccionar la particula con coin = getRandomInt(N_particles), dado que coin 
+    representa un indice entonces deberia ir desde 0 hasta  N_particles-1 ya que coin = N_particles
+    moveria la posicion de una particula ficticia, el problema pasa desapercibido dado que 
+    el compilador no detecta el error, y al usar sanitizers tampoco arroja ningun mensaje, aunque 
+    usando estos ultimos resulta mas facil aislar el error, y mediante pruebas llegar a la raiz del
+    problema.
+
+Implementaciones completadas:
 modificar entropia para que yo pueda pasarle la posicion vieja de una unica particula y me calcule 
 el cambio en la entropia, y que a su vez cuando se llame la primera vez a la funcion calcule la 
 entropia inicial del sistema, es decir :
@@ -26,3 +34,12 @@ entropia inicial del sistema, es decir :
     2.1 si old_data asigna el mismo indice que new_data entonces no hubo cambio en la entropia,
         de lo contrario se cambiara el valor del conteo respectivo al indice de old_data, y de new_data 
         por lo que se calculara el cambio de la entropia en ese caso y se retorna a la simulacion.
+
+Nuevas implementaciones:
+    1. modificar el colteo de particulas en la grid usando matrices a usar un vector que mapee la matriz
+        con el fin de optimizar la manipulacion de memoria con arreglos contiguos, y ademas poder tener 
+        matrices de mayor tamaño como se vio hoy (20-mar-24) en clase.
+        ademas de probar cuantitativamente las mejoras de usar el metodo 2 para calcular la entropia 
+    (el que se basa en una comparacion entre la posicion antigua y la actual), 
+    2.Ademas de pulir los resultados de los demas puntos del proyecto, y la creacion de un mejor makefile
+    que compile con sanitizers y pueda compilar programas idependientes para hacer los test.
