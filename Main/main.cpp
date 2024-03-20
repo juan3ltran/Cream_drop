@@ -16,7 +16,7 @@ int main() {
     int coin;
     for (int i = 0; i < t_final; i++)
     {
-        coin = getRandomInt(N_particles); //Selecciona que particula se movera
+        coin = getRandomInt(N_particles-1); //Selecciona que particula se movera
  
         balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);
         
