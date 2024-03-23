@@ -14,7 +14,7 @@ void inicializar(std::vector<Particle> &balls, int N_particles){
     // Se genera el cuadrado inicial
     
     int square_size = std::sqrt(N_particles);  
-    if(square_size*square_size != balls.size()){throw std::logic_error("Number of particles does not form a perfect square.");}    
+    if(square_size*square_size != balls.size()){throw std::logic_error(" \n  Number of particles does not form a perfect square.\n");}    
     int i=0;
     for(double ix=0; ix < square_size; ix++){
         for (double iy=0; iy < square_size; iy++){            

@@ -14,13 +14,10 @@ int main() {
     inicializar(balls, N_particles);
     //grid entropy
     //////////////////////////////////////////
-    std::vector<std::vector<int>> grid_counts1(divisions, std::vector<int>(divisions, 0.0));
     std::vector<std::vector<int>> grid_counts2(divisions, std::vector<int>(divisions, 0.0));
     for (auto ball : balls){
-        counts(grid_counts1, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
         counts(grid_counts2, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
     }
-    double entropy1 = compute_entropy(grid_counts1, N_particles);
     double entropy2 = compute_entropy(grid_counts2, N_particles);
     /////////////////////////////
     int coin;
@@ -37,21 +34,6 @@ int main() {
         double new_x = balls[coin].getX();
         double new_y = balls[coin].getY();
         
-        //grid_counts1 en 0 para evitar sobreconteo
-        for (int ix = 0; ix < divisions; ix++) 
-        {
-            std::fill(grid_counts1[ix].begin(), grid_counts1[ix].end(), 0.0);
-        }
-
-        for (auto& ball : balls)
-        {
-            //Posicion de Particula iesima (ball.getX(),ball.getY())
-
-            //Conteo de particula en la subdivision
-            counts(grid_counts1, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
-        }        
-        entropy1 = compute_entropy(grid_counts1, N_particles);
-
         // %%%%%%%%%%%%% Calcula el cambio en la entropia (2 casos) %%%%%%%%%%%%%
         double ds = delta_entropy(grid_counts2, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
         entropy2 += ds;
