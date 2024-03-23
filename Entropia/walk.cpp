@@ -2,6 +2,7 @@
 #include <random>
 #include <vector>
 #include "entropia_h.hpp"
+//#include "funtions.hpp"
 
 int getRandomInt(int max);
 
@@ -53,8 +54,8 @@ int main(int argc, char **argv) {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 100000;
-    const  int N_particles = 400;
+    const int t_final = 10000;
+    const  int N_particles = 100;
     const double x_min = -5, x_max = 5;
     const double y_min = -5, y_max = 5;
     const int divisions = 8 ;
@@ -63,6 +64,10 @@ int main(int argc, char **argv) {
     ////%%%%%%%%%%%%% Inizializacion de la grid_entropy %%%%%%%%%%%%%
     std::vector<std::vector<int>> grid_counts1(divisions, std::vector<int>(divisions, 0.0));
     std::vector<std::vector<int>> grid_counts2(divisions, std::vector<int>(divisions, 0.0));
+
+    //std::vector<int> grid_counts1(divisions*divisions,0);
+    //std::vector<int> grid_counts2(divisions*divisions,0);
+
 
     // Inicializa N objetos de la clase Particle y los añade al vector
     for (int i = 0; i < N_particles; ++i) {
@@ -103,10 +108,13 @@ int main(int argc, char **argv) {
         new_y = balls[coin].getY();
         
         //grid_counts1 en 0 para evitar sobreconteo
+        //std::fill(grid_counts1.begin(), grid_counts1.end(), 0.0);
+
         for (int ix = 0; ix < divisions; ix++) 
         {
             std::fill(grid_counts1[ix].begin(), grid_counts1[ix].end(), 0.0);
         }
+
 
         for (auto& ball : balls)
         {
