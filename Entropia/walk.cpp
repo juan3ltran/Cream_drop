@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 10000;
+    const int t_final = 1000000;
     const  int N_particles = 100;
     const double x_min = -5, x_max = 5;
     const double y_min = -5, y_max = 5;

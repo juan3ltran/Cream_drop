@@ -5,11 +5,11 @@ int main() {
 
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 100;
-    const int N_particles = 50;
+    const int t_final = 1000000;
+    const int N_particles = 399;
     const double x_min = -10, x_max = 10;
     const double y_min = -10, y_max = 10;
-    const int divisions = 8;
+    const int divisions = 10;
     // Inicializa n objetos de la clase Particle y los añade al vector
     inicializar(balls, N_particles);
     //grid entropy
@@ -56,9 +56,10 @@ int main() {
         double ds = delta_entropy(grid_counts2, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
         entropy2 += ds;
 
-        std::cout<<entropy1<<"\t"<<entropy2<<std::endl;
+        std::cout<<i<<"\t"<<entropy2<<std::endl;
         //////////////////////////////////////////////////
         
     }
+    
     return 0;
 }
