@@ -1,8 +1,9 @@
 grafica:
 	g++ -c main.cpp utils.cpp
 	g++ main.o utils.o -o main.x
-	./main.x > datos.dat
-	python3 test.py
+	./main.x 
+	python3 graficadores/punto1.py
 
 clean:
 	rm -f *.o *.x *.dat 
+	rm -rf data/*.dat
