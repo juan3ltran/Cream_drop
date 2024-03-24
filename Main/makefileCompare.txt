@@ -1,4 +1,4 @@
-compare: mainCompare.o
+compare:
 	g++ -c mainCompare.cpp utils.cpp
 	g++ mainCompare.o utils.o -o main.x
 	./main.x 
