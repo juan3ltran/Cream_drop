@@ -3,10 +3,10 @@
 
 int main() {
     //Crea los archivos que resuelven cada punto
-    std::ofstream entropia ("./data/punto1.dat");
+    std::ofstream entropia ("./data/punto1.dat"); // Esto hace que el código sea más demorado, quizás es mejor solo imprimir en consola y redireccionar
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 6000000;
+    const int t_final = 6000;
     const int N_particles = 400;
     const double x_min = -10, x_max = 10;
     const double y_min = -10, y_max = 10;
@@ -28,7 +28,7 @@ int main() {
         // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         double old_x = balls[coin].getX();
         double old_y = balls[coin].getY();
-        balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);        
+        balls[coin].moveRandom(0.1, x_min, x_max, y_min, y_max);
         
         // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         double new_x = balls[coin].getX();
