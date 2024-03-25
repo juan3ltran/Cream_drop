@@ -1,16 +1,15 @@
 #include "utils.hpp"
 
 
-int main() {
-    //Crea los archivos que resuelven cada punto
-    std::ofstream entropia ("./data/punto1.dat"); // Esto hace que el código sea más demorado, quizás es mejor solo imprimir en consola y redireccionar
+int simulacion(int t_final, int N_particles, double mitad_lado, int divisions) {
+
+    //Calculo del tiempo de equilibrio para multiples tamaños
+
     std::vector<Particle> balls;
     //Configuracion de parametros
-    const int t_final = 6000;
-    const int N_particles = 400;
-    const double x_min = -20, x_max = 20;
-    const double y_min = -20, y_max = 20;
-    const int divisions = 8;
+    const double x_min = -mitad_lado, x_max = mitad_lado;
+    const double y_min = -mitad_lado, y_max = mitad_lado;
+
     // Inicializa n objetos de la clase Particle y los añade al vector
     inicializar(balls, N_particles);
     //grid entropy
@@ -19,7 +18,7 @@ int main() {
         counts(grid_counts2, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
     }
     double entropy = compute_entropy(grid_counts2, N_particles);
-   
+    
     int coin;
     for (int i = 0; i < t_final; i++)
     {
@@ -38,10 +37,34 @@ int main() {
         double ds = delta_entropy(grid_counts2, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
         entropy += ds;
 
-        entropia<<i<<"\t"<<entropy<<std::endl;
-       
-        
+        //%%%%%%%%%%%%% Comprobacion del equilibrio %%%%%%%%%%%%%
+        double tol = 0.03;
+        double equilibrio = log(divisions*divisions);
+
+        //para evitar comprobarlo en cada intante de tiempo
+        if ((i%500 == 0) && (std::fabs(entropy/equilibrio-1) < tol)) 
+        {
+            //std::cout<<"Error relativo: "<<std::fabs(entropy/equilibrio-1)<<std::endl;
+            return i;
+        }
     }
-    entropia.close();
+    return 1;
+}
+
+int main()
+{
+    int tiempo_final;
+    const int t_final = 6e6;
+    const int N_particles = 400;
+    const int divisiones = 8;
+
+    std::cout<<"size"<<"\t"<<"equilibrio"<<std::endl;
+
+    // Variando el tamaño para diferentes valores de mitad_lado
+    for (double i = 1.5 ; i < 20; i+=0.5)
+    {
+        tiempo_final = simulacion(t_final, N_particles, i, divisiones);
+        std::cout<<i*2<<"\t"<<tiempo_final<<std::endl;
+    }
     return 0;
 }
