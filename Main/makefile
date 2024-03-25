@@ -29,6 +29,13 @@ $(TARGET): $(OBJ)
 run: $(TARGET)
 	./$(TARGET)
 
+# Nuevo objetivo para punto2
+punto2: punto2.o $(OBJ)
+	$(CC) $(CFLAGS) punto2.o utils.o -o punto2.x
+	./punto2.x>data/punto2.dat
+
+	python3 graficadores/graficador_2.py data/punto2.dat
+
 # Graficar los resultados
 plot:
 	python3 graficadores/graficador.py data/punto1.dat
