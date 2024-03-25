@@ -26,6 +26,7 @@ public:
     //Desplazamiento
     void move(double dx, double dy);
     void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max);
+    void moveRandom2(double delta, double x_min, double x_max, double y_min, double y_max);
 };
 
 //Funciones Necesarias
@@ -40,3 +41,5 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, 
 //Funcion para inicializar el cuadrado
 
 void inicializar(std::vector<Particle> &balls, int N_particles);
+
+bool hasGoneOut(Particle particle, std::vector<double> holeinWall);

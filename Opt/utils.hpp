@@ -26,6 +26,7 @@ public:
     //Desplazamiento
     void move(double dx, double dy);
     void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max);
+    void moveRandom2(double delta, double x_min, double x_max, double y_min, double y_max);
 };
 
 //Funciones Necesarias
