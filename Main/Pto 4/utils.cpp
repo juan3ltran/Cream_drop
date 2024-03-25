@@ -2,7 +2,9 @@
 
 //Implementación de funciones
 int getRandomInt(int max) {
-    static std::mt19937 gen(18);
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    // static std::mt19937 gen(18);
     std::uniform_int_distribution<int> dist_(0, max);
     return dist_(gen);
 }
@@ -132,49 +134,39 @@ void Particle::move(double dx, double dy){
     y+=dy;
 }
 
-void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max){
-    
-        std::vector<std::pair<double, double>> possibleMoves;
+// Función para mover las partículas. Devuelve el estado de la partícula (0: dentro, 1: salió por el hueco)
+int Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall){
 
-        // Agrega movimientos posibles teniendo en cuenta los límites
-        if (x > (x_min+delta)) possibleMoves.emplace_back(-delta, 0); // Izquierda
-        if (x < (x_max-delta)) possibleMoves.emplace_back(delta, 0); // Derecha
-        if (y > (y_min+delta)) possibleMoves.emplace_back(0, -delta); // Arriba
-        if (y < (y_max-delta)) possibleMoves.emplace_back(0, delta); // Abajo
-        if (x > (x_min+delta) && y > (y_min+delta)) possibleMoves.emplace_back(-delta, -delta); // Diagonal superior izquierda
-        if (x > (x_min+delta) && y < (y_max-delta)) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
-        if (x < (x_max-delta) && y > (y_min+delta)) possibleMoves.emplace_back(delta, -delta); // Diagonal superior derecha
-        if (x < (x_max-delta) && y < (y_max-delta)) possibleMoves.emplace_back(delta, delta); // Diagonal inferior derecha
+    std::vector<double> possibleMoves = {-delta, 0.0, delta};
+    double newX;
+    double newY;
 
-        if (!possibleMoves.empty()) {
-            int index = getRandomInt(possibleMoves.size() - 1);
-            move(possibleMoves[index].first, possibleMoves[index].second);
+    while (true){
+        // Escoge aleatoriamente alguna dirección
+        int index0 = getRandomInt(possibleMoves.size() - 1);
+        int index1 = getRandomInt(possibleMoves.size() - 1);
+        newX = x + possibleMoves[index0];
+        newY = y + possibleMoves[index1];
+
+        // Se ve primero si salió por el hueco
+        if ( goneThroughWhole(newX, newY, holeinWall) ){
+            return 1; // devuelve status 1 para saber que salió
         }
+        // Si no, se ve si intenta salir por alguna pared
+        else if (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
+            continue;
+        }
+        // Si tampoco, movimiento válido
+        else{
+            // Se actualiza la posición
+            setX(newX); setY(newY);
+            return 0; // devuelve status 0 para saber que no salió
+        }
+    }
 }
 
-// Otra función para el mov de las partículas
-void Particle::moveRandom2(double delta, double x_min, double x_max, double y_min, double y_max){
-    
-        std::vector<double> possibleMoves = {-delta, 0.0, delta};
-
-        // Se inicializan valores fuera de límites para garantizar que se haga el while de abajo
-        double newX = x_min - delta*2;
-        double newY = y_min - delta*2;
-
-        // Se hará este ciclo hasta que se encuentre una nueva posición válida para la partícula
-        // Siempre habrá un movimiento posible (mínimo 3 creo)
-        // while (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
-            int index0 = getRandomInt(possibleMoves.size() - 1);
-            int index1 = getRandomInt(possibleMoves.size() - 1);
-            newX = x + possibleMoves[index0];
-            newY = y + possibleMoves[index1];
-        // }
-
-        // Se actualiza la posición
-        setX(newX); setY(newY);
-}
-
-bool hasGoneOut(Particle particle, std::vector<double> holeinWall){
-    return (particle.getX() > holeinWall[0] && particle.getX() < holeinWall[0] + holeinWall[2] && particle.getY() > holeinWall[1]);
+// Determina si la partícula salió por el hueco
+bool goneThroughWhole(double x, double y, std::vector<double> holeinWall){
+    return (x > holeinWall[0] && x < holeinWall[0] + holeinWall[2] && y > holeinWall[1]);
 }
 

@@ -132,28 +132,8 @@ void Particle::move(double dx, double dy){
     y+=dy;
 }
 
-void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, int seed){
-    
-        std::vector<std::pair<double, double>> possibleMoves;
-
-        // Agrega movimientos posibles teniendo en cuenta los límites
-        if (x > (x_min+delta)) possibleMoves.emplace_back(-delta, 0); // Izquierda
-        if (x < (x_max-delta)) possibleMoves.emplace_back(delta, 0); // Derecha
-        if (y > (y_min+delta)) possibleMoves.emplace_back(0, -delta); // Arriba
-        if (y < (y_max-delta)) possibleMoves.emplace_back(0, delta); // Abajo
-        if (x > (x_min+delta) && y > (y_min+delta)) possibleMoves.emplace_back(-delta, -delta); // Diagonal superior izquierda
-        if (x > (x_min+delta) && y < (y_max-delta)) possibleMoves.emplace_back(-delta, delta); // Diagonal inferior izquierda
-        if (x < (x_max-delta) && y > (y_min+delta)) possibleMoves.emplace_back(delta, -delta); // Diagonal superior derecha
-        if (x < (x_max-delta) && y < (y_max-delta)) possibleMoves.emplace_back(delta, delta); // Diagonal inferior derecha
-
-        if (!possibleMoves.empty()) {
-            int index = getRandomInt(possibleMoves.size() - 1, seed);
-            move(possibleMoves[index].first, possibleMoves[index].second);
-        }
-}
-
 // Otra función para el mov de las partículas
-void Particle::moveRandom2(double delta, double x_min, double x_max, double y_min, double y_max, int seed){
+void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, int seed){
     
         std::vector<double> possibleMoves = {-delta, 0.0, delta};
 

@@ -29,7 +29,11 @@ punto1.x: punto1.o $(OBJ)
 
 punto2.x: punto2.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto2.x
-	./punto2.x>data/punto2.dat
+	./punto2.x > data/punto2.dat
+
+# punto4.x: punto4.o $(OBJ)
+# 	$(CC) $(CFLAGS) $^ -o $>
+# 	./punto4.x > data/punto4.dat
 
 # Graficar los resultados
 plot: punto1.x punto2.x
