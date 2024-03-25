@@ -163,18 +163,14 @@ void Particle::moveRandom2(double delta, double x_min, double x_max, double y_mi
 
         // Se hará este ciclo hasta que se encuentre una nueva posición válida para la partícula
         // Siempre habrá un movimiento posible (mínimo 3 creo)
-        // while (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
+        while (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
             int index0 = getRandomInt(possibleMoves.size() - 1);
             int index1 = getRandomInt(possibleMoves.size() - 1);
             newX = x + possibleMoves[index0];
             newY = y + possibleMoves[index1];
-        // }
+        }
 
         // Se actualiza la posición
         setX(newX); setY(newY);
-}
-
-bool hasGoneOut(Particle particle, std::vector<double> holeinWall){
-    return (particle.getX() > holeinWall[0] && particle.getX() < holeinWall[0] + holeinWall[2] && particle.getY() > holeinWall[1]);
 }
 
