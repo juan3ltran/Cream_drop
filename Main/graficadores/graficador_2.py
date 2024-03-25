@@ -37,10 +37,10 @@ def dispercion(data_path):
     ax.set_title(f'Tiempo de equilibrio en funcion del tamaño del contenedor')
 
     # Display the results
-    print(f"Slope: {slope:.2f}±{std_err:.2f}")
-    print(f"Intercept: {intercept:.2f}±{se_intercept:.2f}")
-    print(f"R-squared: {r_value**2}")
-    plt.show()
+    #print(f"Slope: {slope:.2f}±{std_err:.2f}")
+    #print(f"Intercept: {intercept:.2f}±{se_intercept:.2f}")
+    #print(f"R-squared: {r_value**2}")
+    plt.savefig("./graficas/punto2.pdf")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
