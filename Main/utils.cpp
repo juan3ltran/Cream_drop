@@ -1,8 +1,7 @@
 #include "utils.hpp"
 
 //Implementación de funciones
-int getRandomInt(int max, int seed) {
-    static std::mt19937 gen(seed);
+int getRandomInt(int max, std::mt19937& gen) {
     std::uniform_int_distribution<int> dist_(0, max);
     return dist_(gen);
 }
@@ -133,7 +132,7 @@ void Particle::move(double dx, double dy){
 }
 
 // Otra función para el mov de las partículas
-void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, int seed){
+void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::mt19937& gen){
     
         std::vector<double> possibleMoves = {-delta, 0.0, delta};
 
@@ -144,8 +143,8 @@ void Particle::moveRandom(double delta, double x_min, double x_max, double y_min
         // Se hará este ciclo hasta que se encuentre una nueva posición válida para la partícula
         // Siempre habrá un movimiento posible (mínimo 3 creo)
         while (newX <= x_min || newX >= x_max || newY <= y_min || newY >= y_max){
-            int index0 = getRandomInt(possibleMoves.size() - 1, seed);
-            int index1 = getRandomInt(possibleMoves.size() - 1, seed);
+            int index0 = getRandomInt(possibleMoves.size() - 1, gen);
+            int index1 = getRandomInt(possibleMoves.size() - 1, gen);
             newX = x + possibleMoves[index0];
             newY = y + possibleMoves[index1];
         }

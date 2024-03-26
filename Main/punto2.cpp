@@ -4,7 +4,7 @@
 int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, int seed) {
 
     //Calculo del tiempo de equilibrio para multiples tamaños
-
+    std::mt19937 gen(seed);
     std::vector<Particle> balls;
     //Configuracion de parametros
     const double x_min = -mitad_lado, x_max = mitad_lado;
@@ -23,11 +23,11 @@ int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, i
     for (int i = 0; i < t_final; i++)
     {
         
-        coin = getRandomInt(N_particles-1, seed); //Selecciona que particula se movera
+        coin = getRandomInt(N_particles-1, gen); //Selecciona que particula se movera
         // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         double old_x = balls[coin].getX();
         double old_y = balls[coin].getY();
-        balls[coin].moveRandom(0.125, x_min, x_max, y_min, y_max, seed);        
+        balls[coin].moveRandom(0.125, x_min, x_max, y_min, y_max, gen);        
         
         // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         double new_x = balls[coin].getX();

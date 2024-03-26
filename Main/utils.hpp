@@ -26,11 +26,11 @@ public:
 
     //Desplazamiento
     void move(double dx, double dy);
-    void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, int seed);
+    void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::mt19937& gen);
 };
 
 //Funciones Necesarias
-int getRandomInt(int max, int seed);
+int getRandomInt(int max, std::mt19937& gen);
 
 //Funciones para Calcular entropía
 void counts(std::vector<int>& grid_counts, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);

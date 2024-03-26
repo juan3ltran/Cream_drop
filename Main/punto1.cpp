@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     //Crea el archivo que resuelve el punto
     std::ofstream entropia ("./data/punto1.dat"); 
     std::vector<Particle> balls;
+    std::mt19937 gen(seed);
 
     // Inicializa n objetos de la clase Particle y los añade al vector
     inicializar(balls, N_particles);
@@ -55,11 +56,11 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < t_final; i++)
     {
         
-        coin = getRandomInt(N_particles-1, seed); //Selecciona que particula se movera
+        coin = getRandomInt(N_particles-1, gen); //Selecciona que particula se movera
         // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         double old_x = balls[coin].getX();
         double old_y = balls[coin].getY();
-        balls[coin].moveRandom(1, x_min, x_max, y_min, y_max, seed);        
+        balls[coin].moveRandom(1, x_min, x_max, y_min, y_max, gen);        
         
         // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         double new_x = balls[coin].getX();

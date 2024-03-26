@@ -2,7 +2,7 @@
 CC=g++
 
 # Opciones de compilación por defecto
-CFLAGS=-fsanitize=address -fsanitize=undefined -fsanitize=leak
+CFLAGS = -O3 -fsanitize=address -fsanitize=undefined -fsanitize=leak
 GPROFFLAGS= -Wall -pg -g
 
 # Nombre del archivo de salida
