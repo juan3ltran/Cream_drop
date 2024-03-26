@@ -84,7 +84,7 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y,
         return 0.0;
     }
     else //la particula cambio de subdivision por lo que se calcula los terminos de probabilidad antes y despues del cambio 
-    {
+    {   
         double old_p1 = double(grid_counts[old_ix*divisions + old_iy]) / N_particles; //probabilidad antigua de la subdivision 1 (origen)
         double old_p2 = double(grid_counts[new_ix*divisions + new_iy]) / N_particles; //probabilidad antigua de la subdivision 2 (destino)
 
@@ -143,7 +143,7 @@ void Particle::moveRandom(double delta, double x_min, double x_max, double y_min
 
         // Se hará este ciclo hasta que se encuentre una nueva posición válida para la partícula
         // Siempre habrá un movimiento posible (mínimo 3 creo)
-        while (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
+        while (newX <= x_min || newX >= x_max || newY <= y_min || newY >= y_max){
             int index0 = getRandomInt(possibleMoves.size() - 1, seed);
             int index1 = getRandomInt(possibleMoves.size() - 1, seed);
             newX = x + possibleMoves[index0];
