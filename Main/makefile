@@ -3,8 +3,8 @@ CC=g++
 
 # Opciones de compilación por defecto
 CFLAGS = -O3 -fsanitize=address -fsanitize=undefined -fsanitize=leak
-GPROFFLAGS= -Wall -pg -g
-
+GPROFFLAGS = -Wall -pg -g
+CATCHFLAGS = -l Catch2Main -l Catch2
 # Nombre del archivo de salida
 TARGET=plot
 
@@ -47,6 +47,11 @@ gprof:
 	gprof gprof_report.x gmon.out > gprof-report.txt
 	rm gmon.out *.o *.x
 
+test: test.cpp utils.cpp
+	$(CC) -c $^ $(CATCHFLAGS)
+	$(CC) test.o $(OBJ) -o test.x $(CATCHFLAGS) 
+	./test.x
+	rm *.o 
 .PHONY: clean
 clean:
 	rm -f *.o *.x *.dat *.out *.txt
