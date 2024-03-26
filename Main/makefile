@@ -3,23 +3,16 @@ CC=g++
 
 # Opciones de compilación por defecto
 CFLAGS=-fsanitize=address -fsanitize=undefined -fsanitize=leak
+GPROFFLAGS= -Wall -pg -g
 
 # Nombre del archivo de salida
-TARGET=main.x
+TARGET=plot
 
 # Archivos objeto
-OBJ=main.o utils.o
+OBJ=utils.o
 
 # Compilar y ejecutar el target por defecto
-all: $(TARGET) run plot
-
-# Enlaza los objetos para crear el ejecutable
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
-
-# Compila los ejecutables
-%.x: %.cpp
-	$(CC) $(CFLAGS) $< -o $@
+all: $(TARGET) 
 
 # Compila los archivos fuente en objetos
 %.o: %.cpp
@@ -30,17 +23,32 @@ run: $(TARGET)
 	./$(TARGET)
 
 # Nuevo objetivo para punto2
-punto2: punto2.o $(OBJ)
-	$(CC) $(CFLAGS) punto2.o utils.o -o punto2.x
-	./punto2.x>data/punto2.dat
+punto1.x: punto1.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o punto1.x
+	./punto1.x ./inputs/input1.txt
 
-	python3 graficadores/graficador_2.py data/punto2.dat
+punto2.x: punto2.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o punto2.x
+	./punto2.x > data/punto2.dat
+
+# punto4.x: punto4.o $(OBJ)
+# 	$(CC) $(CFLAGS) $^ -o $>
+# 	./punto4.x > data/punto4.dat
 
 # Graficar los resultados
-plot:
-	python3 graficadores/graficador.py data/punto1.dat
+plot: punto1.x punto2.x
+	python3 graficadores/graficador_1.py data/punto1.dat
+	python3 graficadores/graficador_2.py data/punto2.dat
+
+gprof: 
+	$(CC) $(GPROFFLAGS) -c punto1.cpp utils.cpp
+	$(CC) $(GPROFFLAGS) punto1.o utils.o -o gprof_report.x
+	./gprof_report.x ./inputs/input-profiling.txt
+	gprof gprof_report.x gmon.out > gprof-report.txt
+	rm gmon.out *.o *.x
 
 .PHONY: clean
 clean:
-	rm -f *.o *.x *.dat 
-	rm -rf data/*.dat
+	rm -f *.o *.x *.dat *.out *.txt
+	rm -f data/*.dat
+	rm -f graficas/*.pdf

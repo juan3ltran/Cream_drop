@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 
-int simulacion(int t_final, int N_particles, double mitad_lado, int divisions) {
+int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, int seed) {
 
     //Calculo del tiempo de equilibrio para multiples tamaños
 
@@ -23,11 +23,11 @@ int simulacion(int t_final, int N_particles, double mitad_lado, int divisions) {
     for (int i = 0; i < t_final; i++)
     {
         
-        coin = getRandomInt(N_particles-1); //Selecciona que particula se movera
+        coin = getRandomInt(N_particles-1, seed); //Selecciona que particula se movera
         // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
         double old_x = balls[coin].getX();
         double old_y = balls[coin].getY();
-        balls[coin].moveRandom(0.125, x_min, x_max, y_min, y_max);        
+        balls[coin].moveRandom(0.125, x_min, x_max, y_min, y_max, seed);        
         
         // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
         double new_x = balls[coin].getX();
@@ -57,13 +57,14 @@ int main()
     const int t_final = 6e6;
     const int N_particles = 400;
     const int divisiones = 8;
+    const int seed = 0;
 
     std::cout<<"size"<<"\t"<<"equilibrio"<<std::endl;
 
     // Variando el tamaño para diferentes valores de mitad_lado
     for (double i = 1.5 ; i < 20; i+=0.5)
     {
-        tiempo_final = simulacion(t_final, N_particles, i, divisiones);
+        tiempo_final = simulacion(t_final, N_particles, i, divisiones, seed);
         std::cout<<i*2<<"\t"<<tiempo_final<<std::endl;
     }
     return 0;

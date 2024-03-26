@@ -1,2 +1,0 @@
-los archivos Compare son para comparar el desempeño de las funciones moveRandom y moveRandom2,
-dejé quieto el archivo main y su makefile asociado para no interferir jej

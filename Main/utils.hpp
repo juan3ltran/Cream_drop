@@ -4,7 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
+#include <string>
 //Clases necesarias
 class Particle{
     
@@ -25,12 +26,11 @@ public:
 
     //Desplazamiento
     void move(double dx, double dy);
-    void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max);
-    void moveRandom2(double delta, double x_min, double x_max, double y_min, double y_max);
+    void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, int seed);
 };
 
 //Funciones Necesarias
-int getRandomInt(int max);
+int getRandomInt(int max, int seed);
 
 //Funciones para Calcular entropía
 void counts(std::vector<int>& grid_counts, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);
