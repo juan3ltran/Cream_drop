@@ -36,9 +36,9 @@ punto4.x: punto4.o $(OBJ)
 	./punto4.x > data/punto4.dat
 
 # Graficar los resultados
-plot: punto4.x
-	#python3 graficadores/graficador_1.py data/punto1.dat
-	#python3 graficadores/graficador_2.py data/punto2.dat
+plot: punto1.x punto2.x punto4.x
+	python3 graficadores/graficador_1.py data/punto1.dat
+	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
 gprof: 
