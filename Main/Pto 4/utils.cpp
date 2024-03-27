@@ -1,10 +1,7 @@
 #include "utils.hpp"
 
 //Implementación de funciones
-int getRandomInt(int max) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    // static std::mt19937 gen(18);
+int getRandomInt(int max, std::mt19937& gen) {
     std::uniform_int_distribution<int> dist_(0, max);
     return dist_(gen);
 }
@@ -86,7 +83,7 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y,
         return 0.0;
     }
     else //la particula cambio de subdivision por lo que se calcula los terminos de probabilidad antes y despues del cambio 
-    {
+    {   
         double old_p1 = double(grid_counts[old_ix*divisions + old_iy]) / N_particles; //probabilidad antigua de la subdivision 1 (origen)
         double old_p2 = double(grid_counts[new_ix*divisions + new_iy]) / N_particles; //probabilidad antigua de la subdivision 2 (destino)
 
@@ -134,8 +131,31 @@ void Particle::move(double dx, double dy){
     y+=dy;
 }
 
+// Otra función para el mov de las partículas
+void Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::mt19937& gen){
+    
+        std::vector<double> possibleMoves = {-delta, 0.0, delta};
+
+        // Se inicializan valores fuera de límites para garantizar que se haga el while de abajo
+        double newX = x_min - delta*2;
+        double newY = y_min - delta*2;
+
+        // Se hará este ciclo hasta que se encuentre una nueva posición válida para la partícula
+        // Siempre habrá un movimiento posible (mínimo 3 creo)
+        while (newX <= x_min || newX >= x_max || newY <= y_min || newY >= y_max){
+            int index0 = getRandomInt(possibleMoves.size() - 1, gen);
+            int index1 = getRandomInt(possibleMoves.size() - 1, gen);
+            newX = x + possibleMoves[index0];
+            newY = y + possibleMoves[index1];
+        }
+
+        // Se actualiza la posición
+        setX(newX); setY(newY);
+}
+
+
 // Función para mover las partículas. Devuelve el estado de la partícula (0: dentro, 1: salió por el hueco)
-int Particle::moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall){
+int Particle::moveRandomwHole(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall, std::mt19937& gen){
 
     std::vector<double> possibleMoves = {-delta, 0.0, delta};
     double newX;
@@ -143,13 +163,13 @@ int Particle::moveRandom(double delta, double x_min, double x_max, double y_min,
 
     while (true){
         // Escoge aleatoriamente alguna dirección
-        int index0 = getRandomInt(possibleMoves.size() - 1);
-        int index1 = getRandomInt(possibleMoves.size() - 1);
+        int index0 = getRandomInt(possibleMoves.size() - 1, gen);
+        int index1 = getRandomInt(possibleMoves.size() - 1, gen);
         newX = x + possibleMoves[index0];
         newY = y + possibleMoves[index1];
 
         // Se ve primero si salió por el hueco
-        if ( goneThroughWhole(newX, newY, holeinWall) ){
+        if ( goneThroughWhole(newX, newY, holeinWall, delta) ){
             return 1; // devuelve status 1 para saber que salió
         }
         // Si no, se ve si intenta salir por alguna pared
@@ -166,7 +186,7 @@ int Particle::moveRandom(double delta, double x_min, double x_max, double y_min,
 }
 
 // Determina si la partícula salió por el hueco
-bool goneThroughWhole(double x, double y, std::vector<double> holeinWall){
-    return (x > holeinWall[0] && x < holeinWall[0] + holeinWall[2] && y > holeinWall[1]);
+bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double delta){
+    return (x > holeinWall[0]-delta && x < holeinWall[0]+delta + holeinWall[2] && y > holeinWall[1]);
+    // Se suma el delta para tener en cuenta los casos en los que la partícula esté cerca al hueco y salga en diagonal
 }
-

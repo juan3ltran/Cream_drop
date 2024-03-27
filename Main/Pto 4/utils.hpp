@@ -4,7 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
+#include <string>
 //Clases necesarias
 class Particle{
     
@@ -25,11 +26,12 @@ public:
 
     //Desplazamiento
     void move(double dx, double dy);
-    int moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall);
+    void moveRandom(double delta, double x_min, double x_max, double y_min, double y_max, std::mt19937& gen);
+    int moveRandomwHole(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall, std::mt19937& gen);
 };
 
 //Funciones Necesarias
-int getRandomInt(int max);
+int getRandomInt(int max, std::mt19937& gen);
 
 //Funciones para Calcular entropía
 void counts(std::vector<int>& grid_counts, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);
@@ -41,4 +43,4 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, 
 
 void inicializar(std::vector<Particle> &balls, int N_particles);
 
-bool goneThroughWhole(double x, double y, std::vector<double> holeinWall);
+bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double delta);

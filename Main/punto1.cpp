@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
             } else if (comentario == "#size") {
                 // Asume que x_max, x_min, y_max, y_min usan el mismo valor de "size"
                 double size = std::stod(valor);
-                x_min = -size;
+                x_min = -size; // Creo que acá debería
                 x_max = size;
                 y_min = -size;
                 y_max = size;

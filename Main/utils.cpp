@@ -153,3 +153,40 @@ void Particle::moveRandom(double delta, double x_min, double x_max, double y_min
         setX(newX); setY(newY);
 }
 
+
+// Función para mover las partículas. Devuelve el estado de la partícula (0: dentro, 1: salió por el hueco)
+int Particle::moveRandomwHole(double delta, double x_min, double x_max, double y_min, double y_max, std::vector<double> holeinWall, std::mt19937& gen){
+
+    std::vector<double> possibleMoves = {-delta, 0.0, delta};
+    double newX;
+    double newY;
+
+    while (true){
+        // Escoge aleatoriamente alguna dirección
+        int index0 = getRandomInt(possibleMoves.size() - 1, gen);
+        int index1 = getRandomInt(possibleMoves.size() - 1, gen);
+        newX = x + possibleMoves[index0];
+        newY = y + possibleMoves[index1];
+
+        // Se ve primero si salió por el hueco
+        if ( goneThroughWhole(newX, newY, holeinWall, delta) ){
+            return 1; // devuelve status 1 para saber que salió
+        }
+        // Si no, se ve si intenta salir por alguna pared
+        else if (newX < x_min || newX > x_max || newY < y_min || newY > y_max){
+            continue;
+        }
+        // Si tampoco, movimiento válido
+        else{
+            // Se actualiza la posición
+            setX(newX); setY(newY);
+            return 0; // devuelve status 0 para saber que no salió
+        }
+    }
+}
+
+// Determina si la partícula salió por el hueco
+bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double delta){
+    return (x > holeinWall[0]-delta && x < holeinWall[0]+delta + holeinWall[2] && y > holeinWall[1]);
+    // Se suma el delta para tener en cuenta los casos en los que la partícula esté cerca al hueco y salga en diagonal
+}

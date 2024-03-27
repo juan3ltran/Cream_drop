@@ -31,14 +31,15 @@ punto2.x: punto2.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto2.x
 	./punto2.x > data/punto2.dat
 
-# punto4.x: punto4.o $(OBJ)
-# 	$(CC) $(CFLAGS) $^ -o $>
-# 	./punto4.x > data/punto4.dat
+punto4.x: punto4.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o punto4.x
+	./punto4.x > data/punto4.dat
 
 # Graficar los resultados
-plot: punto1.x punto2.x
-	python3 graficadores/graficador_1.py data/punto1.dat
-	python3 graficadores/graficador_2.py data/punto2.dat
+plot: punto4.x
+	#python3 graficadores/graficador_1.py data/punto1.dat
+	#python3 graficadores/graficador_2.py data/punto2.dat
+	python3 graficadores/graficador_4.py data/punto4.dat
 
 gprof: 
 	$(CC) $(GPROFFLAGS) -c punto1.cpp utils.cpp
@@ -55,5 +56,5 @@ test: test.cpp utils.cpp
 .PHONY: clean
 clean:
 	rm -f *.o *.x *.dat *.out *.txt
-	rm -f data/*.dat
-	rm -f graficas/*.pdf
+	#rm -f data/*.dat
+	#rm -f graficas/*.pdf
