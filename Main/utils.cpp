@@ -26,19 +26,18 @@ void inicializar(std::vector<Particle> &balls, int N_particles){
 
 //Funciones de entropía
 
-double compute_entropy(std::vector<int>& particle_counts, int N_particles)
+double compute_entropy(std::vector<int>& grid_counts, int N_particles)
 {
     // Calcula la entropía
     double entropy = 0.0;
-    int divisions = std::sqrt(particle_counts.size());
+    int divisions = grid_counts.size();
 
-    for (int ix = 0; ix < divisions; ++ix) {
-        for (int iy = 0; iy < divisions; ++iy) {
-            if (particle_counts[ix*divisions + iy] > 0) {
-                double p = double(particle_counts[ix*divisions + iy]) / N_particles;
-                entropy -= p * std::log(p);
-            }
+    for (int i = 0; i < divisions; ++i) {
+        if (grid_counts[i] > 0) {
+            double p = double(grid_counts[i]) / N_particles;
+            entropy -= p * std::log(p);
         }
+        
     }
     return entropy;
 }
