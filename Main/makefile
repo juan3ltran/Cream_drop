@@ -56,5 +56,5 @@ test: test.cpp utils.cpp
 .PHONY: clean
 clean:
 	rm -f *.o *.x *.dat *.out *.txt
-	#rm -f data/*.dat
-	#rm -f graficas/*.pdf
+	rm -f data/*.dat
+	rm -f graficas/*.pdf
