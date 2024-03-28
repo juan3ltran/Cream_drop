@@ -6,6 +6,7 @@ CFLAGS = -O3 -fsanitize=address -fsanitize=undefined -fsanitize=leak
 GPROFFLAGS = -Wall -pg -g
 CATCHFLAGS = -l Catch2Main -l Catch2
 MEMCHECKFLAGS = --tool=memcheck --leak-check=yes
+CACHEGRINDFLAGS =  --tool=cachegrind
 # Nombre del archivo de salida
 TARGET=plot
 
@@ -42,11 +43,19 @@ plot: punto1.x punto2.x punto4.x
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
+cachegrind:
+	$(CC) -g -c -O3 punto1.cpp utils.cpp
+	$(CC) -g -O3 punto1.o utils.o -o punto1.x 
+	valgrind $(CACHEGRINDFLAGS) ./punto1.x ./inputs/input.txt
+	cg_annotate --auto=yes cachegrind.out.* > cachegrind-report.txt
+	rm *.o *.x cachegrind.out.*
+
 memcheck: 
 	$(CC) -g -c -O3 punto1.cpp utils.cpp
 	$(CC) -g -O3 punto1.o utils.o -o punto1.x 
 	valgrind $(MEMCHECKFLAGS) ./punto1.x ./inputs/input.txt
 	rm *.o *.x
+
 gprof: 
 	$(CC) $(GPROFFLAGS) -c punto1.cpp utils.cpp
 	$(CC) $(GPROFFLAGS) punto1.o utils.o -o gprof_report.x
