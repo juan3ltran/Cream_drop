@@ -5,6 +5,7 @@ CC=g++
 CFLAGS = -O3 -fsanitize=address -fsanitize=undefined -fsanitize=leak
 GPROFFLAGS = -Wall -pg -g
 CATCHFLAGS = -l Catch2Main -l Catch2
+MEMCHECKFLAGS = --tool=memcheck --leak-check=yes
 # Nombre del archivo de salida
 TARGET=plot
 
@@ -25,7 +26,7 @@ run: $(TARGET)
 # Nuevo objetivo para punto2
 punto1.x: punto1.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto1.x
-	./punto1.x ./inputs/input1.txt
+	./punto1.x ./inputs/input.txt
 
 punto2.x: punto2.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto2.x
@@ -41,6 +42,11 @@ plot: punto1.x punto2.x punto4.x
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
+memcheck: 
+	$(CC) -g -c -O3 punto1.cpp utils.cpp
+	$(CC) -g -O3 punto1.o utils.o -o punto1.x 
+	valgrind $(MEMCHECKFLAGS) ./punto1.x ./inputs/input.txt
+	rm *.o *.x
 gprof: 
 	$(CC) $(GPROFFLAGS) -c punto1.cpp utils.cpp
 	$(CC) $(GPROFFLAGS) punto1.o utils.o -o gprof_report.x
@@ -49,7 +55,7 @@ gprof:
 	rm gmon.out *.o *.x
 
 test: test.cpp utils.cpp
-	$(CC) -c $^ $(CATCHFLAGS)
+	$(CC) -c  $(CATCHFLAGS)
 	$(CC) test.o $(OBJ) -o test.x $(CATCHFLAGS) 
 	./test.x
 	rm *.o 
