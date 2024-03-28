@@ -44,3 +44,7 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, 
 void inicializar(std::vector<Particle> &balls, int N_particles);
 
 bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double delta);
+
+//Funcion para calcular el drop size pt *3
+template<class T>
+double rms_distance(const std::vector<T> &walkers);

@@ -190,3 +190,18 @@ bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double
     return (x > holeinWall[0]-delta && x < holeinWall[0]+delta + holeinWall[2] && y > holeinWall[1]);
     // Se suma el delta para tener en cuenta los casos en los que la partícula esté cerca al hueco y salga en diagonal
 }
+
+//Calcula la distancia RMS de las particulas desde el origen
+template<class T>
+double rms_distance(const std::vector<T> &walkers){
+    double square_sum = 0.0;
+    for(const Particle walker : walkers){
+        double x = 0.0, y = 0.0, norm = 0.0;
+        x = walker.getX();
+        y = walker.getY();
+        norm = std::sqrt((x*x)+(y*y));
+        square_sum += norm;
+    }
+
+    return std::sqrt(square_sum/walkers.size());
+}
