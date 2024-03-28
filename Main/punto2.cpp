@@ -4,8 +4,10 @@
 int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, int seed) {
 
     //Calculo del tiempo de equilibrio para multiples tamaños
+
     std::mt19937 gen(seed);
     std::vector<Particle> balls;
+    
     //Configuracion de parametros
     const double x_min = -mitad_lado, x_max = mitad_lado;
     const double y_min = -mitad_lado, y_max = mitad_lado;

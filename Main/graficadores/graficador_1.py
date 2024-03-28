@@ -22,8 +22,7 @@ def dispercion(data_path):
     ax.legend()
     ax.grid(True, linewidth=0.1)
     ax.set_title(f'Entropia en funcion del tiempo (divisiones: {divisions})')
-    #print(f"Entropia final: {datos['entropia'][data_size-1]}")
-    #print(f"Tiempo equilibrio: {datos['t'][data_size-1]}")
+    print(f"Entropia final: {datos['entropia'][data_size-1]}")
     plt.savefig("./graficas/punto1.pdf")
 
 if __name__ == "__main__":

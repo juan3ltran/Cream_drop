@@ -27,7 +27,7 @@ run: $(TARGET)
 # Nuevo objetivo para punto2
 punto1.x: punto1.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto1.x
-	./punto1.x ./inputs/input.txt
+	./punto1.x<./inputs/input.txt>data/punto1.dat
 
 punto2.x: punto2.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto2.x
@@ -43,25 +43,28 @@ plot: punto1.x punto2.x punto4.x
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
+plot1: punto1.x 
+	python3 graficadores/graficador_1.py data/punto1.dat
+
 cachegrind:
-	$(CC) -g -c -O3 punto1.cpp utils.cpp
-	$(CC) -g -O3 punto1.o utils.o -o punto1.x 
-	valgrind $(CACHEGRINDFLAGS) ./punto1.x ./inputs/input.txt
+	$(CC) -g -c -O3 main.cpp utils.cpp
+	$(CC) -g -O3 main.o utils.o -o main.x 
+	valgrind $(CACHEGRINDFLAGS) ./main.x<./inputs/input.txt>temp.dat
 	cg_annotate --auto=yes cachegrind.out.* > cachegrind-report.txt
-	rm *.o *.x cachegrind.out.*
+	rm *.o *.x cachegrind.out.* temp.dat
 
 memcheck: 
-	$(CC) -g -c -O3 punto1.cpp utils.cpp
-	$(CC) -g -O3 punto1.o utils.o -o punto1.x 
-	valgrind $(MEMCHECKFLAGS) ./punto1.x ./inputs/input.txt
-	rm *.o *.x
+	$(CC) -g -c -O3 main.cpp utils.cpp
+	$(CC) -g -O3 main.o utils.o -o main.x 
+	valgrind $(MEMCHECKFLAGS) ./main.x<./inputs/input.txt>temp.dat
+	rm *.o *.x temp.dat
 
 gprof: 
-	$(CC) $(GPROFFLAGS) -c punto1.cpp utils.cpp
-	$(CC) $(GPROFFLAGS) punto1.o utils.o -o gprof_report.x
-	./gprof_report.x ./inputs/input-profiling.txt
+	$(CC) $(GPROFFLAGS) -c main.cpp utils.cpp
+	$(CC) $(GPROFFLAGS) main.o utils.o -o gprof_report.x
+	./gprof_report.x <./inputs/input-profiling.txt>temp.dat
 	gprof gprof_report.x gmon.out > gprof-report.txt
-	rm gmon.out *.o *.x
+	rm gmon.out *.o *.x temp.dat
 
 test: test.cpp utils.cpp
 	$(CC) -c  $(CATCHFLAGS)
