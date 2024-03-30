@@ -43,8 +43,6 @@ plot: punto1.x punto2.x punto4.x
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
-plot1: punto1.x 
-	python3 graficadores/graficador_1.py data/punto1.dat
 
 cachegrind:
 	$(CC) -g -c -O3 main.cpp utils.cpp
