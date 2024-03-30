@@ -43,6 +43,17 @@ plot: punto1.x punto2.x punto4.x
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 
+tcomp:
+	$(CC) -g -c t_computo.cpp utils.cpp
+	$(CC) -g t_computo.o utils.o -o t_computo.x 
+	./t_computo.x > data/tcompno3.dat
+	
+	$(CC) -g -c -O3 t_computo.cpp utils.cpp
+	$(CC) -g -O3 t_computo.o utils.o -o t_computo.x 
+	./t_computo.x > data/tcompo3.dat
+
+plottcomp:
+	python3 graficadores/graficador_tcomp.py
 
 cachegrind:
 	$(CC) -g -c -O3 main.cpp utils.cpp

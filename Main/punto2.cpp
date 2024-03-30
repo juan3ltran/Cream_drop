@@ -12,8 +12,8 @@ int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, i
     const double x_min = -mitad_lado, x_max = mitad_lado;
     const double y_min = -mitad_lado, y_max = mitad_lado;
 
-    // Inicializa n objetos de la clase Particle y los añade al vector
-    inicializar(balls, N_particles);
+    // Inicializa n objetos de la clase Particle y los añade al vector, todos empiezan en el centro
+    inicializar(balls, N_particles, mitad_lado*2, true);
     //grid entropy
     std::vector<int> grid_counts2(divisions*divisions,0);
     for (auto ball : balls){

@@ -6,6 +6,7 @@ int main(void){
     const int t_final = 6e+6, N_particles = 400, divisions = 8, seed = 42;    
     const double x_min = -100, x_max = 100, y_min = -100, y_max = 100;
     const double step = (x_max - x_min) / divisions;
+    const double size = xmax - xmin;
     
     //Start writing 
     const std::string output_data_file_name = "rms_values.txt";
@@ -17,7 +18,7 @@ int main(void){
     std::mt19937 gen(seed);
 
     // Inicializa n objetos de la clase Particle y los añade al vector
-    inicializar(balls, N_particles);
+    inicializar(balls, N_particles, size);
 
     int coin = 0;
     const double max_size = std::sqrt(x_max-step);

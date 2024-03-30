@@ -42,7 +42,7 @@ double compute_entropy(std::vector<int>& particle_counts, int N_particles);
 double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, double x_min, double x_max, double y_min, double y_max, int divisions, double old_x, double old_y, int N_particles);
 //Funcion para inicializar el cuadrado
 
-void inicializar(std::vector<Particle> &balls, int N_particles);
+void inicializar(std::vector<Particle> &balls, int N_particles, double LatticeSize, bool initCenter=false);
 
 bool goneThroughWhole(double x, double y, std::vector<double> holeinWall, double delta);
 
