@@ -67,7 +67,7 @@ gprof:
 	rm gmon.out *.o *.x temp.dat
 
 test: test.cpp utils.cpp
-	$(CC) -c  $(CATCHFLAGS)
+	$(CC) -c  $(CATCHFLAGS) $^
 	$(CC) test.o $(OBJ) -o test.x $(CATCHFLAGS) 
 	./test.x
 	rm *.o 
