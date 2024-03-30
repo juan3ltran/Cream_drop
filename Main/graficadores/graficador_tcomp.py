@@ -18,4 +18,4 @@ ax.set_xlabel('Divisions')
 ax.grid(alpha=.2)
 ax.legend()
 
-plt.savefig("./graficas/tcomp.pdf")
+plt.savefig("./graficas/tcomp2.pdf")
