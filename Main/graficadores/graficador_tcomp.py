@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Reading data
-datano3 = np.loadtxt('./data/tcompno3Div.dat', delimiter='\t', skiprows=1)
-datao3 = np.loadtxt('./data/tcompo3Div.dat', delimiter='\t', skiprows=1)
+datano3 = np.loadtxt('./data/tcompno3.dat', delimiter='\t', skiprows=1)
+datao3 = np.loadtxt('./data/tcompo3.dat', delimiter='\t', skiprows=1)
 # time = np.arange(len(data))
 
 fig, ax = plt.subplots(figsize=(6,4))
@@ -18,4 +18,4 @@ ax.set_xlabel('Divisions')
 ax.grid(alpha=.2)
 ax.legend()
 
-plt.savefig("./graficas/tcomp2.pdf")
+plt.savefig("./graficas/tcomp.pdf")

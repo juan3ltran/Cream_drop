@@ -62,10 +62,10 @@ int main(int argc, char *argv[]) {
     std::cout<< "Divs" <<"\t"<< "Time [ms]" <<std::endl;
 
     double meanTime;
-    int times2Repeat = 5;
+    int times2Repeat = 2;
 
     // divisions es el que más afecta el tiempo
-    for (divisions=5; divisions<size*100; divisions+=50){
+    for (divisions=5; divisions<200; divisions+=50){
         meanTime = 0.;
         for (int repeat=0; repeat<times2Repeat; repeat++){
             meanTime += simulation(t_final, N_particles, divisions, seed, size);
