@@ -6,7 +6,7 @@ int getRandomInt(int max, std::mt19937& gen) {
     return dist_(gen);
 }
 
-void inicializar(std::vector<Particle> &balls, int N_particles, double LatticeSize, bool initCenter){
+void inicializar(std::vector<Particle> &balls, int N_particles, double Size, bool initCenter){
     for (int i = 0; i < N_particles; ++i) {
         balls.emplace_back(0, 0); // Cada partícula inicia en (0,0)
     }
@@ -14,7 +14,7 @@ void inicializar(std::vector<Particle> &balls, int N_particles, double LatticeSi
     // Si se quiere que empiecen en el centro, se salta esto, si no, sigue
     if (!initCenter){
         // Se genera el cuadrado inicial
-        if(std::sqrt(N_particles) > LatticeSize){throw std::logic_error(" \n Particles can't fit in the container, increase its size or decrease number of particles.\n");}
+        if(std::sqrt(N_particles) > Size){throw std::logic_error(" \n Particles can't fit in the container, increase its size or decrease number of particles.\n");}
         int square_size = std::sqrt(N_particles);
         if(square_size*square_size != balls.size()){throw std::logic_error(" \n  Number of particles does not form a perfect square.\n");}
 
@@ -33,11 +33,11 @@ void inicializar(std::vector<Particle> &balls, int N_particles, double LatticeSi
 //Calcula la distancia RMS de las particulas desde el origen
 double rms_distance(const std::vector<Particle> &walkers){
     double square_sum = 0.0;
+    double x = 0.0, y = 0.0, norm = 0.0;
     for(const Particle walker : walkers){
-        double x = 0.0, y = 0.0, norm = 0.0;
         x = walker.getX();
         y = walker.getY();
-        norm = std::sqrt((x*x)+(y*y));
+        norm = (x*x)+(y*y);
         square_sum += norm;
     }
 

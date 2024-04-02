@@ -1,0 +1,5 @@
+400 #N_moleculas
+200 #size
+6000000 #t_final
+8 #divisiones
+42 #seed

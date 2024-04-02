@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     std::mt19937 gen(seed);
 
     // Inicializa n objetos de la clase Particle y los añade al vector
-    inicializar(balls, N_particles);
+    inicializar(balls, N_particles, size);
     //grid entropy
     std::vector<int> grid_counts2(divisions*divisions,0);
     for (auto ball : balls){

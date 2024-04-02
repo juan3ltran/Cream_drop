@@ -27,11 +27,15 @@ run: $(TARGET)
 # Nuevo objetivo para punto2
 punto1.x: punto1.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto1.x
-	./punto1.x<./inputs/input.txt>data/punto1.dat
+	./punto1.x<./inputs/input1.txt>data/punto1.dat
 
 punto2.x: punto2.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto2.x
 	./punto2.x > data/punto2.dat
+
+punto3.x: punto3.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o punto3.x
+	./punto3.x > data/punto3.dat
 
 punto4.x: punto4.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto4.x
