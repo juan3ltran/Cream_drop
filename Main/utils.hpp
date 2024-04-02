@@ -32,7 +32,7 @@ public:
 };
 
 //Funciones Necesarias
-int getRandomInt(int max, std::mt19937& gen);
+int getRandomInt(int max, std::mt19937& gen, bool positive=true);
 
 //Funciones para Calcular entropía
 void counts(std::vector<int>& grid_counts, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);

@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 
-int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, int seed) {
+int simulacion(int t_final, int N_particles, double size, int divisions, int seed) {
 
     //Calculo del tiempo de equilibrio para multiples tamaños
 
@@ -9,11 +9,11 @@ int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, i
     std::vector<Particle> balls;
     
     //Configuracion de parametros
-    const double x_min = -mitad_lado, x_max = mitad_lado;
-    const double y_min = -mitad_lado, y_max = mitad_lado;
+    const double x_min = -size/2, x_max = size/2;
+    const double y_min = -size/2, y_max = size/2;
 
     // Inicializa n objetos de la clase Particle y los añade al vector, todos empiezan en el centro
-    inicializar(balls, N_particles, mitad_lado*2, true);
+    inicializar(balls, N_particles, size, true);
     //grid entropy
     std::vector<int> grid_counts2(divisions*divisions,0);
     for (auto ball : balls){
@@ -44,9 +44,10 @@ int simulacion(int t_final, int N_particles, double mitad_lado, int divisions, i
         double equilibrio = log(divisions*divisions);
 
         //para evitar comprobarlo en cada intante de tiempo
-        if ((i%500 == 0) && (std::fabs(entropy/equilibrio-1) < tol)) 
+        if ((i%1024 == 0) && (std::fabs(entropy/equilibrio-1) < tol)) 
         {
-            //std::cout<<"Error relativo: "<<std::fabs(entropy/equilibrio-1)<<std::endl;
+            double rms = rms_distance(balls);
+            std::cout<<entropy<<'\t'<<rms<<'\t';
             return i;
         }
     }
@@ -61,13 +62,14 @@ int main()
     const int divisiones = 8;
     const int seed = 0;
 
-    std::cout<<"size"<<"\t"<<"equilibrio"<<std::endl;
+    std::cout<<"entropia"<<"\t"<<"rms"<<"\t"<<"size"<<"\t"<<"equilibrio"<<std::endl;
 
     // Variando el tamaño para diferentes valores de mitad_lado
-    for (double i = 1.5 ; i < 20; i+=0.5)
+    for (double i = 3 ; i < 30; i+=0.2)
     {
         tiempo_final = simulacion(t_final, N_particles, i, divisiones, seed);
-        std::cout<<i*2<<"\t"<<tiempo_final<<std::endl;
+        //Multiplicacion por 2 para tener la longitud de un lado 
+        std::cout<<i<<"\t"<<tiempo_final<<std::endl;
     }
     return 0;
 }
