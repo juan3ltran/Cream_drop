@@ -50,6 +50,11 @@ t_computo.x:
 	$(CC) -g -O3 t_computo.o utils.o -o t_computo.x 
 	./t_computo.x o3
 
+t:
+	$(CC) -g -c t.cpp utils.cpp
+	$(CC) -g t.o utils.o -o t.x
+	./t.x
+
 # Graficar los resultados
 plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
 	python3 graficadores/graficador_1.py data/punto1.dat
