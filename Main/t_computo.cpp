@@ -1,5 +1,6 @@
 #include "utils.hpp"
 #include <chrono>
+#include <fstream>
 
 auto simulation(int t_final, int N_particles, int divisions, int seed, double size){
     // Initializing time-measuring variables
@@ -50,7 +51,7 @@ auto simulation(int t_final, int N_particles, int divisions, int seed, double si
     return std::chrono::duration_cast<std::chrono::milliseconds>(t_end-t_start).count();
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     //Declara variables
     int t_final = 1e6;
     int N_particles = 100;
@@ -59,42 +60,49 @@ int main(int argc, char *argv[]) {
     double size = 1001;
     double x_min, x_max, y_min, y_max;
 
-    std::cout<< "Divs" <<"\t"<< "Time [ms]" <<std::endl;
-
     double meanTime;
-    int times2Repeat = 2;
+    int times2Repeat = 5;
 
+    // Corriendo para diferentes valores de Divisions
+    std::ofstream dataDiv("./data/tcomp"+std::string(argv[1])+"Div.dat");
     // divisions es el que más afecta el tiempo
-    for (divisions=5; divisions<200; divisions+=50){
+    for (divisions=5; divisions<1e4; divisions+=50){
         meanTime = 0.;
         for (int repeat=0; repeat<times2Repeat; repeat++){
             meanTime += simulation(t_final, N_particles, divisions, seed, size);
         }
         meanTime /= times2Repeat;
-        std::cout<< divisions <<"\t"<< meanTime <<"\n";
+        dataDiv<< divisions <<"\t"<< meanTime <<"\n";
     }
+    dataDiv.close();
 
-    // times2Repeat = 1;
-
+    // Corriendo para diferentes valores de número de partículas
+    divisions = 10; // Se reestablece el valor inicial
+    std::ofstream dataNpart("./data/tcomp"+std::string(argv[1])+"Npart.dat");
     // Np afecta pero no mucho al tiempo
-    // for (int N_particles_sqrt=40; N_particles_sqrt<1000; N_particles_sqrt+=10){
-    //     meanTime = 0.;
-    //     for (int repeat=0; repeat<times2Repeat; repeat++){
-    //         meanTime += simulation(t_final, N_particles_sqrt*N_particles_sqrt, divisions, seed, size);
-    //     }
-    //     meanTime /= times2Repeat;
-    //     std::cout<< N_particles_sqrt*N_particles_sqrt <<"\t"<< meanTime <<"\n";
-    // }
+    for (int N_particles_sqrt=40; N_particles_sqrt<1000; N_particles_sqrt+=10){
+        meanTime = 0.;
+        for (int repeat=0; repeat<times2Repeat; repeat++){
+            meanTime += simulation(t_final, N_particles_sqrt*N_particles_sqrt, divisions, seed, size);
+        }
+        meanTime /= times2Repeat;
+        dataNpart << N_particles_sqrt*N_particles_sqrt <<"\t"<< meanTime <<"\n";
+    }
+    dataNpart.close();
 
+    // Corriendo para diferentes valores de Size
+    N_particles = 100; // Se reestablece el valor inicial
+    std::ofstream dataSize("./data/tcomp"+std::string(argv[1])+"Size.dat");
     // Size no afecta casi nada del tiempo de cómputo
-    // for (size=10; size<1e3; size+=10){
-    //     meanTime = 0.;
-    //     for (int repeat=0; repeat<times2Repeat; repeat++){
-    //         meanTime += simulation(t_final, N_particles, divisions, seed, size);
-    //     }
-    //     meanTime /= times2Repeat;
-    //     std::cout<< size <<"\t"<< meanTime <<"\n";
-    // }
+    for (size=10; size<1e3; size+=10){
+        meanTime = 0.;
+        for (int repeat=0; repeat<times2Repeat; repeat++){
+            meanTime += simulation(t_final, N_particles, divisions, seed, size);
+        }
+        meanTime /= times2Repeat;
+        dataSize << size <<"\t"<< meanTime <<"\n";
+    }
+    dataSize.close();
 
     return 0;
 }
