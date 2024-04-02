@@ -21,9 +21,9 @@ int main(void){
     inicializar(balls, N_particles, size, 1);
 
     int coin = 0;
-    const double max_drop = 3.5;
+    const double max_drop = 3.555;
     double rms;
-    double tol=0.03;
+    double tol=0.02;
     std::cout<< "time" << "\t" << "rms" << "\t" << "entropia" << "\n";
     for (int i = 1; i < t_final; i++){
         
