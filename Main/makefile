@@ -62,7 +62,7 @@ pruebas.x: pruebas.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o pruebas.x
 	./pruebas.x 
 # Graficar los resultados
-plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
+plot: punto1.x punto2_.x punto3.x punto4.x t_computo.x
 	python3 graficadores/graficador_1.py data/punto1.dat
 	python3 graficadores/graficador_2.py data/punto2.dat
 	python3 graficadores/graficador_4.py data/punto4.dat

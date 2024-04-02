@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <unordered_map>
 
 int main(void){
 
@@ -31,12 +32,12 @@ int main(void){
         balls[coin].moveRandom(0.125, x_min, x_max,  y_min,  y_max, gen); //Movimiento aleatorio
         if (i%5000==0)
         {
-            std::vector<int> grid_counts(divisions*divisions,0);
+            std::unordered_map<int, int> entropyGrid; // 1: índice de la celda, 2: cantidad de partículas en esa celda
             for (auto ball : balls)
             {
-                counts(grid_counts, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
+                counts(entropyGrid, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
             }
-            double entropy = compute_entropy(grid_counts, N_particles);
+            double entropy = compute_entropy(entropyGrid, N_particles);
             rms = rms_distance(balls);
             //stop simulation if rms is near to limit
             if(std::fabs(1-rms/max_drop) < tol) break;

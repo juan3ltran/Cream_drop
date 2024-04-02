@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <unordered_map>
 //Clases necesarias
 class Particle{
     
@@ -35,11 +36,11 @@ public:
 int getRandomInt(int max, std::mt19937& gen, bool positive=true);
 
 //Funciones para Calcular entropía
-void counts(std::vector<int>& grid_counts, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);
+void counts(std::unordered_map<int,int>& entropyGrid, double x, double y, double x_min, double x_max, double y_min, double y_max, int divisions);
 
-double compute_entropy(std::vector<int>& particle_counts, int N_particles);
+double compute_entropy(std::unordered_map<int, int>& entropyGrid, int N_particles);
 
-double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, double x_min, double x_max, double y_min, double y_max, int divisions, double old_x, double old_y, int N_particles);
+double delta_entropy(std::unordered_map<int, int>& entropyGrid, double new_x, double new_y, double x_min, double x_max, double y_min, double y_max, int divisions, double old_x, double old_y, int N_particles);
 //Funcion para inicializar el cuadrado
 
 void inicializar(std::vector<Particle> &balls, int N_particles, double LatticeSize, bool initCenter=false);
