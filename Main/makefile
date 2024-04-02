@@ -56,11 +56,12 @@ t:
 	./t.x
 
 # Graficar los resultados
-plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
+# plot: punto1.x punto2_.x punto3.x punto4.x t_computo.x
+plot: punto1.x
 	python3 graficadores/graficador_1.py data/punto1.dat
-	python3 graficadores/graficador_2.py data/punto2.dat
-	python3 graficadores/graficador_4.py data/punto4.dat
-	python3 graficadores/graficador_tcomp.py
+	# python3 graficadores/graficador_2.py data/punto2.dat
+	# python3 graficadores/graficador_4.py data/punto4.dat
+	# python3 graficadores/graficador_tcomp.py
 
 cachegrind:
 	$(CC) -g -c -O3 main.cpp utils.cpp

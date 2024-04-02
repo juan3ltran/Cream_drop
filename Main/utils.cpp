@@ -54,23 +54,9 @@ double rms_distance(const std::vector<Particle> &walkers){
 }
 
 //Funciones de entropía
-double compute_entropy(std::vector<int>& grid_counts, int N_particles)
-{
-    // Calcula la entropía
-    double entropy = 0.0;
-    int divisions = grid_counts.size();
 
-    for (int i = 0; i < divisions; ++i) {
-        if (grid_counts[i] > 0) {
-            double p = double(grid_counts[i]) / N_particles;
-            entropy -= p * std::log(p);
-        }
-        
-    }
-    return entropy;
-}
 
-void counts(std::vector<int>& grid_counts, double x, double y, 
+void counts(std::unordered_map<int,int>& entropyGrid, double x, double y, 
             double x_min, double x_max, double y_min, double y_max, int divisions)
 {
     //Calcula el tamaño de cada subdivision en terminos de las coordenadas de posicion
@@ -84,13 +70,26 @@ void counts(std::vector<int>& grid_counts, double x, double y,
             int ix = int((x - x_min) / x_step);
             int iy = int((y - y_min) / y_step);
 
-            // Incrementa el contador para esa subdivisión
-            grid_counts[ix*divisions + iy]++;
+            // Se suma uno a ese índice (esa celda)
+            entropyGrid[ix*divisions + iy]++;
         }
 }
 
+double compute_entropy(std::unordered_map<int, int>& entropyGrid, int N_particles)
+{
+    // Calcula la entropía
+    double entropy = 0.0;
 
-double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y, 
+    for (const auto& pair : entropyGrid) {
+        double p = double(pair.second) / N_particles;
+        entropy -= p * std::log(p);
+    }
+
+    return entropy;
+}
+
+
+double delta_entropy(std::unordered_map<int, int>& entropyGrid, double new_x, double new_y, 
                     double x_min, double x_max, double y_min, double y_max, int divisions, double old_x, double old_y, int N_particles)
 {
     //Calcula el cambio en la entropia teniendo en cuenta la subdivision de donde sale y a que llega una particula
@@ -111,16 +110,16 @@ double delta_entropy(std::vector<int>& grid_counts, double new_x, double new_y,
     }
     else //la particula cambio de subdivision por lo que se calcula los terminos de probabilidad antes y despues del cambio 
     {   
-        double old_p1 = double(grid_counts[old_ix*divisions + old_iy]) / N_particles; //probabilidad antigua de la subdivision 1 (origen)
-        double old_p2 = double(grid_counts[new_ix*divisions + new_iy]) / N_particles; //probabilidad antigua de la subdivision 2 (destino)
+        double old_p1 = double(entropyGrid[old_ix*divisions + old_iy]) / N_particles; //probabilidad antigua de la subdivision 1 (origen)
+        double old_p2 = double(entropyGrid[new_ix*divisions + new_iy]) / N_particles; //probabilidad antigua de la subdivision 2 (destino) Si el índice no está en el mapa, su valor es 0 por default
 
         // Ajusta el contador para la subdivision donde estaba la particula y a la cual llego
-        grid_counts[new_ix*divisions + new_iy]++;
-        grid_counts[old_ix*divisions + old_iy]--;
+        entropyGrid[new_ix*divisions + new_iy]++;
+        entropyGrid[old_ix*divisions + old_iy]--;
         
 
-        double new_p1 = double(grid_counts[old_ix*divisions + old_iy]) / N_particles; //probabilidad nueva de la subdivision 1 (origen)
-        double new_p2 = double(grid_counts[new_ix*divisions + new_iy]) / N_particles; //probabilidad nueva de la subdivision 2 (destino)
+        double new_p1 = double(entropyGrid[old_ix*divisions + old_iy]) / N_particles; //probabilidad nueva de la subdivision 1 (origen)
+        double new_p2 = double(entropyGrid[new_ix*divisions + new_iy]) / N_particles; //probabilidad nueva de la subdivision 2 (destino)
 
         double ds = 0;
         //old_p1*log(old_p1)-new_p1*log(new_p1) + old_p2*log(old_p2)-new_p2*log(new_p2); //Cambio en la entropia 

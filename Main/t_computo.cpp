@@ -1,6 +1,7 @@
 #include "utils.hpp"
 #include <chrono>
 #include <fstream>
+#include <unordered_map>
 
 auto simulation(int t_final, int N_particles, int divisions, int seed, double size){
     // Initializing time-measuring variables
@@ -20,11 +21,11 @@ auto simulation(int t_final, int N_particles, int divisions, int seed, double si
     // Inicializa n objetos de la clase Particle y los añade al vector
     inicializar(balls, N_particles, size);
     //grid entropy
-    std::vector<int> grid_counts2(divisions*divisions,0);
+    std::unordered_map<int, int> entropyGrid; // 1: índice de la celda, 2: cantidad de partículas en esa celda
     for (auto ball : balls){
-        counts(grid_counts2, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
+        counts(entropyGrid, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
     }
-    double entropy = compute_entropy(grid_counts2, N_particles);
+    double entropy = compute_entropy(entropyGrid, N_particles);
 
     int coin;
     for (int i = 0; i < t_final; i++)
@@ -40,7 +41,7 @@ auto simulation(int t_final, int N_particles, int divisions, int seed, double si
         double new_y = balls[coin].getY();
         
         // %%%%%%%%%%%%% Calcula el cambio en la entropia (2 casos) %%%%%%%%%%%%%
-        double ds = delta_entropy(grid_counts2, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
+        double ds = delta_entropy(entropyGrid, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
         entropy += ds;
 
         // std::cout<<i<<"\t"<<entropy<<std::endl;
