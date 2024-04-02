@@ -25,10 +25,10 @@ def dispercion(data_path):
     fig, ax = plt.subplots()
     ax.scatter(datos['size'], datos['equilibrio'], label='Entropia', s=5)
 
-    label_ajuste=f'Ajuste: k*log(x)+b\nk={slope:.2f}±{std_err:.2f}, b={intercept:.2f}±{se_intercept:.2f}'
+    label_ajuste=f'Ajuste: k*log(x)+b\nk={slope:.2f}±{std_err:.2f}, b={intercept:.2f}±{se_intercept:.2f}\nR^2={r_value:.3f}'
     ax.plot(np.exp(teorica_x), np.exp(teorica_y), label=label_ajuste, color="red")
 
-    ax.set_xlabel("Size")
+    ax.set_xlabel("Tamaño del contenedor")
     ax.set_ylabel("Tiempo para el equilibrio")
     ax.set_xscale('log')
     ax.set_yscale('log')
