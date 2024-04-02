@@ -41,22 +41,20 @@ punto4.x: punto4.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto4.x
 	./punto4.x > data/punto4.dat
 
-# Graficar los resultados
-plot: punto1.x punto2.x punto4.x
-	python3 graficadores/graficador_1.py data/punto1.dat
-	python3 graficadores/graficador_2.py data/punto2.dat
-	python3 graficadores/graficador_4.py data/punto4.dat
-
-tcomp:
+t_computo.x:
 	$(CC) -g -c t_computo.cpp utils.cpp
 	$(CC) -g t_computo.o utils.o -o t_computo.x 
-	./t_computo.x > data/tcompno3.dat
+	./t_computo.x no3
 	
 	$(CC) -g -c -O3 t_computo.cpp utils.cpp
 	$(CC) -g -O3 t_computo.o utils.o -o t_computo.x 
-	./t_computo.x > data/tcompo3.dat
+	./t_computo.x o3
 
-plottcomp:
+# Graficar los resultados
+plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
+	python3 graficadores/graficador_1.py data/punto1.dat
+	python3 graficadores/graficador_2.py data/punto2.dat
+	python3 graficadores/graficador_4.py data/punto4.dat
 	python3 graficadores/graficador_tcomp.py
 
 cachegrind:
