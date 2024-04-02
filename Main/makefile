@@ -24,6 +24,9 @@ all: $(TARGET)
 run: $(TARGET)
 	./$(TARGET)
 
+main.x: main.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o main.x
+	./main.x<./inputs/input.txt>data/main.dat
 # Nuevo objetivo para punto2
 punto1.x: punto1.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto1.x
@@ -55,6 +58,9 @@ t:
 	$(CC) -g t.o utils.o -o t.x
 	./t.x
 
+pruebas.x: pruebas.o $(OBJ)
+	$(CC) $(CFLAGS) $^ -o pruebas.x
+	./pruebas.x 
 # Graficar los resultados
 plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
 	python3 graficadores/graficador_1.py data/punto1.dat
