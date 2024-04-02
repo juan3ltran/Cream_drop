@@ -1,9 +1,18 @@
 #include "utils.hpp"
 
 //Implementación de funciones
-int getRandomInt(int max, std::mt19937& gen) {
-    std::uniform_int_distribution<int> dist_(0, max);
-    return dist_(gen);
+int getRandomInt(int max, std::mt19937& gen, bool positive) {
+    if (positive)
+    {
+        std::uniform_int_distribution<int> dist_(0, max);
+        return dist_(gen);
+    }
+    else
+    {
+        std::uniform_int_distribution<int> dist_(-max, max);
+        return dist_(gen);
+    }
+    
 }
 
 void inicializar(std::vector<Particle> &balls, int N_particles, double Size, bool initCenter){
