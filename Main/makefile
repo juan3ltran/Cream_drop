@@ -55,6 +55,7 @@ t_computo.x:
 plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
 	python3 graficadores/graficador_1.py data/punto1.dat
 	python3 graficadores/graficador_2.py data/punto2.dat
+	python3 graficadores/graficador_3.py data/punto3.dat
 	python3 graficadores/graficador_4.py data/punto4.dat
 	python3 graficadores/graficador_tcomp.py
 	rm -r *.o 
