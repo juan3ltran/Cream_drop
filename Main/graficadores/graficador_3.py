@@ -22,7 +22,7 @@ def dispercion(data_path):
     teorica_y = intercept + slope * teorica_x
 
     # Plotting
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize = (8,5))
     ax.scatter(datos['time'], datos['rms'], label='Rms', s=5)
 
     label_ajuste=f'Ajuste: k*log(x)+b\nk={slope:.2f}±{std_err:.2f}, b={intercept:.2f}±{se_intercept:.2f}'

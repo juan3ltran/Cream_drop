@@ -24,20 +24,21 @@ def plot(data_path):
     fig, ax = plt.subplots(figsize=(6,4))
 
     # Plot data
-    ax.plot(time, data, 'k', label='Data')
+    ax.plot(time, data, 'k', label='Datos')
 
     # Regression
     reg, popt, perr, R2 = regression(time, data, exp)
-    ax.plot(time, reg, 'r--', label='Regression')
+    label_ajuste=fr'Regresión: A*exp(-t/$\tau$)'+'\n'+fr'A={popt[0]:.2f}±{perr[0]:.2f}, $\tau$={popt[1]:.0f}±{perr[1]:.0f}'+'\n'+fr'$R^2$={R2:.4f}'
+    ax.plot(time, reg, 'r--', label=label_ajuste)
 
-    ax.set_ylabel('Number of Particles Inside Container')
-    ax.set_xlabel('Time')
+    ax.set_ylabel('Número de partículas dentro del contenedor')
+    ax.set_xlabel('Tiempo')
     ax.grid(alpha=.2)
     ax.legend()
 
     # Display the results
-    print("R2:",R2)
-    print(f"a: {popt[0]}  ,  tau: {popt[1]}")
+    # print("R2:",R2)
+    # print(f"a: {popt[0]}  ,  tau: {popt[1]}")
 
     plt.savefig("./graficas/punto4.pdf")
 
