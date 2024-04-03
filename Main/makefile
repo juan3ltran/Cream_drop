@@ -45,6 +45,7 @@ punto4.x: punto4.o $(OBJ)
 	./punto4.x > data/punto4.dat
 
 t_computo.x:
+	echo "\n Esto puede tardar aproximadamente 30 minutos \n"
 	$(CC) -g -c t_computo.cpp utils.cpp
 	$(CC) -g t_computo.o utils.o -o t_computo.x 
 	./t_computo.x no3
@@ -53,14 +54,6 @@ t_computo.x:
 	$(CC) -g -O3 t_computo.o utils.o -o t_computo.x 
 	./t_computo.x o3
 
-t:
-	$(CC) -g -c t.cpp utils.cpp
-	$(CC) -g t.o utils.o -o t.x
-	./t.x
-
-pruebas.x: pruebas.o $(OBJ)
-	$(CC) $(CFLAGS) $^ -o pruebas.x
-	./pruebas.x 
 # Graficar los resultados
 plot: punto1.x punto2.x punto3.x punto4.x t_computo.x
 	python3 graficadores/graficador_1.py data/punto1.dat

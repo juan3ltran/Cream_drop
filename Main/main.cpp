@@ -52,5 +52,6 @@ int main(int argc, char *argv[]) {
      
         
     }
+    std::cout<<"Entropía final: "<<entropy;
     return 0;
 }
