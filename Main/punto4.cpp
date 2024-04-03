@@ -18,7 +18,7 @@ int main() {
     const double y_min = -containerSize/2., y_max = containerSize/2.;
 
     // Inicializa n objetos de la clase Particle y los añade al vector
-    inicializar(particles, N_particles);
+    inicializar(particles, N_particles, containerSize);
 
     // Parámetros del hueco (creo que toda la implementación es dependiente de que el hueco esté en la pared de arriba, se podría hacer más general hm)
     std::vector<double> holeinWall = {-holeLength/2., y_max, holeLength}; // x, y, length
