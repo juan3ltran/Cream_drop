@@ -28,7 +28,7 @@ TEST_CASE("rms_distance is working correctly","[rms_distance]"){
     std::vector<Particle> balls;
     int N_particles = 1000;
     std::mt19937 gen(18);
-    double half_size = 5;
+    double half_size = 5,tol = 0.02;
     for (int i = 0; i < N_particles; ++i) {
             double x = (getRandomInt(1000, gen, false)/1000.0)*half_size;
             double y = (getRandomInt(1000, gen, false)/1000.0)*half_size;
@@ -36,7 +36,7 @@ TEST_CASE("rms_distance is working correctly","[rms_distance]"){
         }
     SECTION("Todas las partículas uniformemente distribuidas"){
         std::cout<<"x de particula 3 \t"<<balls[6].getX()<<std::endl;
-        REQUIRE(rms_distance(balls) == 2);
+        REQUIRE(std::fabs(1-rms_distance(balls)/4.08)<tol);
     }
     
 }

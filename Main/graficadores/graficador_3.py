@@ -28,8 +28,8 @@ def dispercion(data_path):
     label_ajuste=f'Ajuste: k*log(x)+b\nk={slope:.2f}±{std_err:.2f}, b={intercept:.2f}±{se_intercept:.2f}'
     ax.plot(np.exp(teorica_x), np.exp(teorica_y), label=label_ajuste, color="red")
 
-    ax.set_xlabel("time")
-    ax.set_ylabel("Tiempo para el rms")
+    ax.set_xlabel("Tiempo")
+    ax.set_ylabel("Distancia cuadratica media")
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.legend()
