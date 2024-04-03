@@ -23,7 +23,7 @@ def dispercion(data_path):
 
     # Plotting
     fig, ax = plt.subplots()
-    ax.scatter(datos['time'], datos['rms'], label='rms', s=5)
+    ax.scatter(datos['time'], datos['rms'], label='Rms', s=5)
 
     label_ajuste=f'Ajuste: k*log(x)+b\nk={slope:.2f}±{std_err:.2f}, b={intercept:.2f}±{se_intercept:.2f}'
     ax.plot(np.exp(teorica_x), np.exp(teorica_y), label=label_ajuste, color="red")

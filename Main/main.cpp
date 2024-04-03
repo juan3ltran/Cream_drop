@@ -49,10 +49,9 @@ int main(int argc, char *argv[]) {
         // %%%%%%%%%%%%% Calcula el cambio en la entropia (2 casos) %%%%%%%%%%%%%
         double ds = delta_entropy(grid_counts, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
         entropy += ds;
-
-        std::cout<<i<<"\t"<<entropy<<std::endl;
-       
+     
         
     }
+    std::cout<<"Entropía final: "<<entropy;
     return 0;
 }
