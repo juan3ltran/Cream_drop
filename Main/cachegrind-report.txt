@@ -3,7 +3,7 @@ I1 cache:         32768 B, 64 B, 8-way associative
 D1 cache:         32768 B, 64 B, 8-way associative
 LL cache:         8388608 B, 64 B, direct-mapped
 Command:          ./main.x
-Data file:        cachegrind.out.12056
+Data file:        cachegrind.out.12409
 Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
 Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
 Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
@@ -48,304 +48,6 @@ Ir                   I1mr         ILmr         Dr                   D1mr        
  12,000,156 ( 0.35%)   0            0                    0              0              0                   0              0            0           ???:operator delete(void*, unsigned long)
   5,779,620 ( 0.17%)   2 ( 0.08%)   2 ( 0.08%)           0              0              0           2,022,867 ( 0.40%)     0            0           /usr/include/c++/11/bits/unordered_map.h:delta_entropy(std::unordered_map<int, int, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, int> > >&, double, double, double, double, double, double, int, double, double, int)
   5,762,640 ( 0.17%)   2 ( 0.08%)   2 ( 0.08%)           0              0              0                   0              0            0           ./math/./w_log_template.c:log@@GLIBC_2.29
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/ext/new_allocator.h
---------------------------------------------------------------------------------
-Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                 D1mw       DLmw       
-
--- line 103 ----------------------------------------
-         .          .          .                   .          .          .                  .          .          .                 allocate(size_type __n, const void* = static_cast<const void*>(0))
-         .          .          .                   .          .          .                  .          .          .                 {
-         .          .          .                   .          .          .                  .          .          .           #if __cplusplus >= 201103L
-         .          .          .                   .          .          .                  .          .          .           	 // _GLIBCXX_RESOLVE_LIB_DEFECTS
-         .          .          .                   .          .          .                  .          .          .           	 // 3308. std::allocator<void>().allocate(n)
-         .          .          .                   .          .          .                  .          .          .           	 static_assert(sizeof(_Tp) != 0, "cannot allocate incomplete types");
-         .          .          .                   .          .          .                  .          .          .           #endif
-         .          .          .                   .          .          .                  .          .          .           
-        16 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                  0          0          0           	if (__builtin_expect(__n > this->_M_max_size(), false))
-         .          .          .                   .          .          .                  .          .          .           	  {
-         .          .          .                   .          .          .                  .          .          .           	    // _GLIBCXX_RESOLVE_LIB_DEFECTS
-         .          .          .                   .          .          .                  .          .          .           	    // 3190. allocator::allocate sometimes returns too little storage
-         .          .          .                   .          .          .                  .          .          .           	    if (__n > (std::size_t(-1) / sizeof(_Tp)))
-         .          .          .                   .          .          .                  .          .          .           	      std::__throw_bad_array_new_length();
-         .          .          .                   .          .          .                  .          .          .           	    std::__throw_bad_alloc();
-         .          .          .                   .          .          .                  .          .          .           	  }
-         .          .          .                   .          .          .                  .          .          .           
-         .          .          .                   .          .          .                  .          .          .           #if __cpp_aligned_new
-         .          .          .                   .          .          .                  .          .          .           	if (alignof(_Tp) > __STDCPP_DEFAULT_NEW_ALIGNMENT__)
-         .          .          .                   .          .          .                  .          .          .           	  {
-         .          .          .                   .          .          .                  .          .          .           	    std::align_val_t __al = std::align_val_t(alignof(_Tp));
-         .          .          .                   .          .          .                  .          .          .           	    return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp), __al));
-         .          .          .                   .          .          .                  .          .          .           	  }
-         .          .          .                   .          .          .                  .          .          .           #endif
-18,000,338 ( 0.52%) 3 ( 0.11%) 3 ( 0.12%)         20 ( 0.00%) 0          0          6,000,108 ( 1.19%) 0          0           	return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
-         .          .          .                   .          .          .                  .          .          .                 }
-         .          .          .                   .          .          .                  .          .          .           
-         .          .          .                   .          .          .                  .          .          .                 // __p is not permitted to be a null pointer.
-         .          .          .                   .          .          .                  .          .          .                 void
-         9 ( 0.00%) 0          0                   0          0          0                  9 ( 0.00%) 0          0                 deallocate(_Tp* __p, size_type __t __attribute__ ((__unused__)))
-         .          .          .                   .          .          .                  .          .          .                 {
-         .          .          .                   .          .          .                  .          .          .           #if __cpp_aligned_new
-         .          .          .                   .          .          .                  .          .          .           	if (alignof(_Tp) > __STDCPP_DEFAULT_NEW_ALIGNMENT__)
-         .          .          .                   .          .          .                  .          .          .           	  {
-         .          .          .                   .          .          .                  .          .          .           	    ::operator delete(__p,
-         .          .          .                   .          .          .                  .          .          .           # if __cpp_sized_deallocation
-         .          .          .                   .          .          .                  .          .          .           			      __t * sizeof(_Tp),
-         .          .          .                   .          .          .                  .          .          .           # endif
-         .          .          .                   .          .          .                  .          .          .           			      std::align_val_t(alignof(_Tp)));
-         .          .          .                   .          .          .                  .          .          .           	    return;
-         .          .          .                   .          .          .                  .          .          .           	  }
-         .          .          .                   .          .          .                  .          .          .           #endif
-36,000,191 ( 1.04%) 0          0          12,000,018 ( 1.45%) 0          0                 86 ( 0.00%) 0          0           	::operator delete(__p
-         .          .          .                   .          .          .                  .          .          .           #if __cpp_sized_deallocation
-         .          .          .                   .          .          .                  .          .          .           			  , __t * sizeof(_Tp)
-         .          .          .                   .          .          .                  .          .          .           #endif
-         .          .          .                   .          .          .                  .          .          .           			 );
-         .          .          .                   .          .          .                  .          .          .                 }
-         .          .          .                   .          .          .                  .          .          .           
-         .          .          .                   .          .          .                  .          .          .           #if __cplusplus <= 201703L
-         .          .          .                   .          .          .                  .          .          .                 size_type
-         .          .          .                   .          .          .                  .          .          .                 max_size() const _GLIBCXX_USE_NOEXCEPT
-         .          .          .                   .          .          .                  .          .          .                 { return _M_max_size(); }
-         .          .          .                   .          .          .                  .          .          .           
-         .          .          .                   .          .          .                  .          .          .           #if __cplusplus >= 201103L
-         .          .          .                   .          .          .                  .          .          .                 template<typename _Up, typename... _Args>
-         .          .          .                   .          .          .                  .          .          .           	void
-       511 ( 0.00%) 0          0                 511 ( 0.00%) 0          0                  0          0          0           	construct(_Up* __p, _Args&&... __args)
-         .          .          .                   .          .          .                  .          .          .           	noexcept(std::is_nothrow_constructible<_Up, _Args...>::value)
-         .          .          .                   .          .          .                  .          .          .           	{ ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
-         .          .          .                   .          .          .                  .          .          .           
-         .          .          .                   .          .          .                  .          .          .                 template<typename _Up>
-         .          .          .                   .          .          .                  .          .          .           	void
-         .          .          .                   .          .          .                  .          .          .           	destroy(_Up* __p)
-         .          .          .                   .          .          .                  .          .          .           	noexcept(std::is_nothrow_destructible<_Up>::value)
-         .          .          .                   .          .          .                  .          .          .           	{ __p->~_Up(); }
--- line 168 ----------------------------------------
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/bits/stl_algobase.h
---------------------------------------------------------------------------------
-Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
-
--- line 423 ----------------------------------------
-         .          .          .                   .          .          .                   .          .          .           	  using __assignable = conditional<_IsMove,
-         .          .          .                   .          .          .                   .          .          .           					   is_move_assignable<_Tp>,
-         .          .          .                   .          .          .                   .          .          .           					   is_copy_assignable<_Tp>>;
-         .          .          .                   .          .          .                   .          .          .           	  // trivial types can have deleted assignment
-         .          .          .                   .          .          .                   .          .          .           	  static_assert( __assignable::type::value, "type is not assignable" );
-         .          .          .                   .          .          .                   .          .          .           #endif
-         .          .          .                   .          .          .                   .          .          .           	  const ptrdiff_t _Num = __last - __first;
-         .          .          .                   .          .          .                   .          .          .           	  if (_Num)
-24,000,000 ( 0.69%) 0          0          12,000,000 ( 1.45%) 0          0          12,000,000 ( 2.37%) 0          0           	    __builtin_memmove(__result, __first, sizeof(_Tp) * _Num);
-         .          .          .                   .          .          .                   .          .          .           	  return __result + _Num;
-         .          .          .                   .          .          .                   .          .          .           	}
-         .          .          .                   .          .          .                   .          .          .               };
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .           _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .             template<typename _Tp, typename _Ref, typename _Ptr>
-         .          .          .                   .          .          .                   .          .          .               struct _Deque_iterator;
--- line 439 ----------------------------------------
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/bits/hashtable_policy.h
---------------------------------------------------------------------------------
-Ir                  I1mr       ILmr       Dr                  D1mr        DLmr       Dw                  D1mw       DLmw       
-
--- line 211 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .              *  template parameter of class template _Hashtable controls whether
-         .          .          .                   .           .          .                   .          .          .              *  nodes also store a hash code. In some cases (e.g. strings) this
-         .          .          .                   .           .          .                   .          .          .              *  may be a performance win.
-         .          .          .                   .           .          .                   .          .          .              */
-         .          .          .                   .           .          .                   .          .          .             struct _Hash_node_base
-         .          .          .                   .           .          .                   .          .          .             {
-         .          .          .                   .           .          .                   .          .          .               _Hash_node_base* _M_nxt;
-         .          .          .                   .           .          .                   .          .          .           
-        65 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0           0          0                  65 ( 0.00%) 0          0               _Hash_node_base() noexcept : _M_nxt() { }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .               _Hash_node_base(_Hash_node_base* __next) noexcept : _M_nxt(__next) { }
-         .          .          .                   .           .          .                   .          .          .             };
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             /**
-         .          .          .                   .           .          .                   .          .          .              *  struct _Hash_node_value_base
-         .          .          .                   .           .          .                   .          .          .              *
-         .          .          .                   .           .          .                   .          .          .              *  Node type with the value to store.
--- line 227 ----------------------------------------
--- line 274 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .              *  Primary template struct _Hash_node.
-         .          .          .                   .           .          .                   .          .          .              */
-         .          .          .                   .           .          .                   .          .          .             template<typename _Value, bool _Cache_hash_code>
-         .          .          .                   .           .          .                   .          .          .               struct _Hash_node
-         .          .          .                   .           .          .                   .          .          .               : _Hash_node_base
-         .          .          .                   .           .          .                   .          .          .               , _Hash_node_value<_Value, _Cache_hash_code>
-         .          .          .                   .           .          .                   .          .          .               {
-         .          .          .                   .           .          .                   .          .          .                 _Hash_node*
-       165 ( 0.00%) 0          0                   0           0          0                   0          0          0                 _M_next() const noexcept
-       169 ( 0.00%) 0          0                 169 ( 0.00%) 13 ( 0.09%) 0                   0          0          0                 { return static_cast<_Hash_node*>(this->_M_nxt); }
-         .          .          .                   .           .          .                   .          .          .               };
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             /// Base class for node iterators.
-         .          .          .                   .           .          .                   .          .          .             template<typename _Value, bool _Cache_hash_code>
-         .          .          .                   .           .          .                   .          .          .               struct _Node_iterator_base
-         .          .          .                   .           .          .                   .          .          .               {
-         .          .          .                   .           .          .                   .          .          .                 using __node_type = _Hash_node<_Value, _Cache_hash_code>;
-         .          .          .                   .           .          .                   .          .          .           
--- line 291 ----------------------------------------
--- line 422 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .             {
-         .          .          .                   .           .          .                   .          .          .               typedef std::size_t first_argument_type;
-         .          .          .                   .           .          .                   .          .          .               typedef std::size_t second_argument_type;
-         .          .          .                   .           .          .                   .          .          .               typedef std::size_t result_type;
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .               result_type
-         .          .          .                   .           .          .                   .          .          .               operator()(first_argument_type __num,
-         .          .          .                   .           .          .                   .          .          .           	       second_argument_type __den) const noexcept
- 5,205,058 ( 0.15%) 1 ( 0.04%) 1 ( 0.04%)         59 ( 0.00%)  0          0                   0          0          0               { return __num % __den; }
-         .          .          .                   .           .          .                   .          .          .             };
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             /// Default ranged hash function H.  In principle it should be a
-         .          .          .                   .           .          .                   .          .          .             /// function object composed from objects of type H1 and H2 such that
-         .          .          .                   .           .          .                   .          .          .             /// h(k, N) = h2(h1(k), N), but that would mean making extra copies of
-         .          .          .                   .           .          .                   .          .          .             /// h1 and h2.  So instead we'll just use a tag to tell class template
-         .          .          .                   .           .          .                   .          .          .             /// hashtable to do that composition.
-         .          .          .                   .           .          .                   .          .          .             struct _Default_ranged_hash { };
--- line 438 ----------------------------------------
--- line 439 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             /// Default value for rehash policy.  Bucket size is (usually) the
-         .          .          .                   .           .          .                   .          .          .             /// smallest prime that keeps the load factor small enough.
-         .          .          .                   .           .          .                   .          .          .             struct _Prime_rehash_policy
-         .          .          .                   .           .          .                   .          .          .             {
-         .          .          .                   .           .          .                   .          .          .               using __has_load_factor = true_type;
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .               _Prime_rehash_policy(float __z = 1.0) noexcept
-         2 ( 0.00%) 0          0                   0           0          0                   2 ( 0.00%) 0          0               : _M_max_load_factor(__z), _M_next_resize(0) { }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .               float
-         .          .          .                   .           .          .                   .          .          .               max_load_factor() const noexcept
-         .          .          .                   .           .          .                   .          .          .               { return _M_max_load_factor; }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .               // Return a bucket size no smaller than n.
-         .          .          .                   .           .          .                   .          .          .               std::size_t
-         .          .          .                   .           .          .                   .          .          .               _M_next_bkt(std::size_t __n) const;
--- line 455 ----------------------------------------
--- line 715 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .                 __node._M_node = nullptr;
-         .          .          .                   .           .          .                   .          .          .                 return __pos->second;
-         .          .          .                   .           .          .                   .          .          .               }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             template<typename _Key, typename _Pair, typename _Alloc, typename _Equal,
-         .          .          .                   .           .          .                   .          .          .           	   typename _Hash, typename _RangeHash, typename _Unused,
-         .          .          .                   .           .          .                   .          .          .           	   typename _RehashPolicy, typename _Traits>
-         .          .          .                   .           .          .                   .          .          .               auto
-20,811,432 ( 0.60%) 2 ( 0.08%) 2 ( 0.08%)  1,734,286 ( 0.21%)  0          0          10,405,716 ( 2.06%) 0          0               _Map_base<_Key, _Pair, _Alloc, _Select1st, _Equal,
-         .          .          .                   .           .          .                   .          .          .           	      _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits, true>::
-         .          .          .                   .           .          .                   .          .          .               operator[](key_type&& __k)
-         .          .          .                   .           .          .                   .          .          .               -> mapped_type&
-         .          .          .                   .           .          .                   .          .          .               {
-         .          .          .                   .           .          .                   .          .          .                 __hashtable* __h = static_cast<__hashtable*>(this);
-         .          .          .                   .           .          .                   .          .          .                 __hash_code __code = __h->_M_hash_code(__k);
-         .          .          .                   .           .          .                   .          .          .                 std::size_t __bkt = __h->_M_bucket_index(__code);
-         .          .          .                   .           .          .                   .          .          .                 if (auto __node = __h->_M_find_node(__bkt, __k, __code))
- 1,734,222 ( 0.05%) 0          0                   0           0          0                   0          0          0           	return __node->_M_v().second;
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 typename __hashtable::_Scoped_node __node {
-         .          .          .                   .           .          .                   .          .          .           	__h,
-         .          .          .                   .           .          .                   .          .          .           	std::piecewise_construct,
-         .          .          .                   .           .          .                   .          .          .           	std::forward_as_tuple(std::move(__k)),
-         .          .          .                   .           .          .                   .          .          .           	std::tuple<>()
-         .          .          .                   .           .          .                   .          .          .                 };
-         .          .          .                   .           .          .                   .          .          .                 auto __pos
-         .          .          .                   .           .          .                   .          .          .           	= __h->_M_insert_unique_node(__bkt, __code, __node._M_node);
-         .          .          .                   .           .          .                   .          .          .                 __node._M_node = nullptr;
-        64 ( 0.00%) 0          0                   0           0          0                   0          0          0                 return __pos->second;
-17,342,860 ( 0.50%) 0          0          13,874,288 ( 1.67%)  0          0                   0          0          0               }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             template<typename _Key, typename _Pair, typename _Alloc, typename _Equal,
-         .          .          .                   .           .          .                   .          .          .           	   typename _Hash, typename _RangeHash, typename _Unused,
-         .          .          .                   .           .          .                   .          .          .           	   typename _RehashPolicy, typename _Traits>
-         .          .          .                   .           .          .                   .          .          .               auto
-         .          .          .                   .           .          .                   .          .          .               _Map_base<_Key, _Pair, _Alloc, _Select1st, _Equal,
-         .          .          .                   .           .          .                   .          .          .           	      _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits, true>::
-         .          .          .                   .           .          .                   .          .          .               at(const key_type& __k)
--- line 752 ----------------------------------------
--- line 1211 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 _Hash_code_base(const _Hash& __hash) : __ebo_hash(__hash) { }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 __hash_code
-         .          .          .                   .           .          .                   .          .          .                 _M_hash_code(const _Key& __k) const
-         .          .          .                   .           .          .                   .          .          .                 {
-         .          .          .                   .           .          .                   .          .          .           	static_assert(__is_invocable<const _Hash&, const _Key&>{},
-         .          .          .                   .           .          .                   .          .          .           	    "hash function must be invocable with an argument of key type");
- 1,736,162 ( 0.05%) 0          0           1,735,224 ( 0.21%)  0          0                   0          0          0           	return _M_hash()(__k);
-         .          .          .                   .           .          .                   .          .          .                 }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 template<typename _Kt>
-         .          .          .                   .           .          .                   .          .          .           	__hash_code
-         .          .          .                   .           .          .                   .          .          .           	_M_hash_code_tr(const _Kt& __k) const
-         .          .          .                   .           .          .                   .          .          .           	{
-         .          .          .                   .           .          .                   .          .          .           	  static_assert(__is_invocable<const _Hash&, const _Kt&>{},
-         .          .          .                   .           .          .                   .          .          .           	    "hash function must be invocable with an argument of key type");
--- line 1227 ----------------------------------------
--- line 1609 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 bool
-         .          .          .                   .           .          .                   .          .          .                 _M_equals(const _Key& __k, __hash_code __c,
-         .          .          .                   .           .          .                   .          .          .           		const _Hash_node_value<_Value, __hash_cached::value>& __n) const
-         .          .          .                   .           .          .                   .          .          .                 {
-         .          .          .                   .           .          .                   .          .          .           	static_assert(__is_invocable<const _Equal&, const _Key&, const _Key&>{},
-         .          .          .                   .           .          .                   .          .          .           	  "key equality predicate must be invocable with two arguments of "
-         .          .          .                   .           .          .                   .          .          .           	  "key type");
- 3,470,320 ( 0.10%) 0          0                   0           0          0                   0          0          0           	return _S_equals(__c, __n) && _M_eq()(__k, _ExtractKey{}(__n._M_v()));
-         .          .          .                   .           .          .                   .          .          .                 }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 template<typename _Kt>
-         .          .          .                   .           .          .                   .          .          .           	bool
-         .          .          .                   .           .          .                   .          .          .           	_M_equals_tr(const _Kt& __k, __hash_code __c,
-         .          .          .                   .           .          .                   .          .          .           		     const _Hash_node_value<_Value,
-         .          .          .                   .           .          .                   .          .          .           					    __hash_cached::value>& __n) const
-         .          .          .                   .           .          .                   .          .          .           	{
--- line 1625 ----------------------------------------
--- line 1904 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .                 __n->~__node_type();
-         .          .          .                   .           .          .                   .          .          .                 __node_alloc_traits::deallocate(_M_node_allocator(), __ptr, 1);
-         .          .          .                   .           .          .                   .          .          .               }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
-         .          .          .                   .           .          .                   .          .          .               void
-         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::_M_deallocate_nodes(__node_ptr __n)
-         .          .          .                   .           .          .                   .          .          .               {
-       131 ( 0.00%) 0          0                   0           0          0                   0          0          0                 while (__n)
-         .          .          .                   .           .          .                   .          .          .           	{
-         .          .          .                   .           .          .                   .          .          .           	  __node_ptr __tmp = __n;
-         .          .          .                   .           .          .                   .          .          .           	  __n = __n->_M_next();
-         .          .          .                   .           .          .                   .          .          .           	  _M_deallocate_node(__tmp);
-         .          .          .                   .           .          .                   .          .          .           	}
-         .          .          .                   .           .          .                   .          .          .               }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
--- line 1920 ----------------------------------------
--- line 1921 ----------------------------------------
-         .          .          .                   .           .          .                   .          .          .               auto
-         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::_M_allocate_buckets(std::size_t __bkt_count)
-         .          .          .                   .           .          .                   .          .          .               -> __buckets_ptr
-         .          .          .                   .           .          .                   .          .          .               {
-         .          .          .                   .           .          .                   .          .          .                 __buckets_alloc_type __alloc(_M_node_allocator());
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .                 auto __ptr = __buckets_alloc_traits::allocate(__alloc, __bkt_count);
-         .          .          .                   .           .          .                   .          .          .                 __buckets_ptr __p = std::__to_address(__ptr);
-        16 ( 0.00%) 0          0                   0           0          0                   4 ( 0.00%) 0          0                 __builtin_memset(__p, 0, __bkt_count * sizeof(__node_base_ptr));
-         .          .          .                   .           .          .                   .          .          .                 return __p;
-         .          .          .                   .           .          .                   .          .          .               }
-         .          .          .                   .           .          .                   .          .          .           
-         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
-         .          .          .                   .           .          .                   .          .          .               void
-         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::
-         .          .          .                   .           .          .                   .          .          .               _M_deallocate_buckets(__buckets_ptr __bkts,
-         .          .          .                   .           .          .                   .          .          .           			  std::size_t __bkt_count)
--- line 1937 ----------------------------------------
 
 --------------------------------------------------------------------------------
 -- Auto-annotated source: /usr/include/c++/11/bits/random.tcc
@@ -457,143 +159,6 @@ Ir                  I1mr       ILmr       Dr                  D1mr       DLmr   
          .          .          .                   .          .          .                   .           .          .           	   _UIntType __a, size_t __u, _UIntType __d, size_t __s,
          .          .          .                   .          .          .                   .           .          .           	   _UIntType __b, size_t __t, _UIntType __c, size_t __l,
 -- line 471 ----------------------------------------
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/bits/stl_vector.h
---------------------------------------------------------------------------------
-Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw         D1mw       DLmw       
-
--- line 90 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 struct _Vector_impl_data
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	pointer _M_start;
-         .          .          .                   .          .          .          .          .          .           	pointer _M_finish;
-         .          .          .                   .          .          .          .          .          .           	pointer _M_end_of_storage;
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .           	_Vector_impl_data() _GLIBCXX_NOEXCEPT
-         4 ( 0.00%) 0          0                   0          0          0          2 ( 0.00%) 0          0           	: _M_start(), _M_finish(), _M_end_of_storage()
-         .          .          .                   .          .          .          .          .          .           	{ }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .           #if __cplusplus >= 201103L
-         .          .          .                   .          .          .          .          .          .           	_Vector_impl_data(_Vector_impl_data&& __x) noexcept
-         .          .          .                   .          .          .          .          .          .           	: _M_start(__x._M_start), _M_finish(__x._M_finish),
-         .          .          .                   .          .          .          .          .          .           	  _M_end_of_storage(__x._M_end_of_storage)
-         .          .          .                   .          .          .          .          .          .           	{ __x._M_start = __x._M_finish = __x._M_end_of_storage = pointer(); }
-         .          .          .                   .          .          .          .          .          .           #endif
--- line 106 ----------------------------------------
--- line 328 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .                 _Vector_base(const allocator_type& __a, _Vector_base&& __x)
-         .          .          .                   .          .          .          .          .          .                 : _M_impl(_Tp_alloc_type(__a), std::move(__x._M_impl))
-         .          .          .                   .          .          .          .          .          .                 { }
-         .          .          .                   .          .          .          .          .          .           #endif
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 ~_Vector_base() _GLIBCXX_NOEXCEPT
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	_M_deallocate(_M_impl._M_start,
-         2 ( 0.00%) 0          0                   1 ( 0.00%) 0          0          0          0          0           		      _M_impl._M_end_of_storage - _M_impl._M_start);
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .               public:
-         .          .          .                   .          .          .          .          .          .                 _Vector_impl _M_impl;
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 pointer
-         .          .          .                   .          .          .          .          .          .                 _M_allocate(size_t __n)
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
-        20 ( 0.00%) 0          0                   0          0          0          0          0          0           	return __n != 0 ? _Tr::allocate(_M_impl, __n) : pointer();
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 void
-         .          .          .                   .          .          .          .          .          .                 _M_deallocate(pointer __p, size_t __n)
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
-        22 ( 0.00%) 0          0                   0          0          0          0          0          0           	if (__p)
-         .          .          .                   .          .          .          .          .          .           	  _Tr::deallocate(_M_impl, __p, __n);
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .               protected:
-         .          .          .                   .          .          .          .          .          .                 void
-         .          .          .                   .          .          .          .          .          .                 _M_create_storage(size_t __n)
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	this->_M_impl._M_start = this->_M_allocate(__n);
--- line 361 ----------------------------------------
--- line 672 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .                 /**
-         .          .          .                   .          .          .          .          .          .                  *  The dtor only erases the elements, and note that if the
-         .          .          .                   .          .          .          .          .          .                  *  elements themselves are pointers, the pointed-to memory is
-         .          .          .                   .          .          .          .          .          .                  *  not touched in any way.  Managing the pointer is the user's
-         .          .          .                   .          .          .          .          .          .                  *  responsibility.
-         .          .          .                   .          .          .          .          .          .                  */
-         .          .          .                   .          .          .          .          .          .                 ~vector() _GLIBCXX_NOEXCEPT
-         .          .          .                   .          .          .          .          .          .                 {
-         1 ( 0.00%) 0          0                   1 ( 0.00%) 0          0          0          0          0           	std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
-         .          .          .                   .          .          .          .          .          .           		      _M_get_Tp_allocator());
-         .          .          .                   .          .          .          .          .          .           	_GLIBCXX_ASAN_ANNOTATE_BEFORE_DEALLOC;
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 /**
-         .          .          .                   .          .          .          .          .          .                  *  @brief  %Vector assignment operator.
-         .          .          .                   .          .          .          .          .          .                  *  @param  __x  A %vector of identical element and allocator types.
-         .          .          .                   .          .          .          .          .          .                  *
--- line 688 ----------------------------------------
--- line 911 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .                 crend() const noexcept
-         .          .          .                   .          .          .          .          .          .                 { return const_reverse_iterator(begin()); }
-         .          .          .                   .          .          .          .          .          .           #endif
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 // [23.2.4.2] capacity
-         .          .          .                   .          .          .          .          .          .                 /**  Returns the number of elements in the %vector.  */
-         .          .          .                   .          .          .          .          .          .                 size_type
-         .          .          .                   .          .          .          .          .          .                 size() const _GLIBCXX_NOEXCEPT
-        44 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 0          0          0          0          0                 { return size_type(this->_M_impl._M_finish - this->_M_impl._M_start); }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 /**  Returns the size() of the largest possible %vector.  */
-         .          .          .                   .          .          .          .          .          .                 size_type
-         .          .          .                   .          .          .          .          .          .                 max_size() const _GLIBCXX_NOEXCEPT
-         .          .          .                   .          .          .          .          .          .                 { return _S_max_size(_M_get_Tp_allocator()); }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .           #if __cplusplus >= 201103L
-         .          .          .                   .          .          .          .          .          .                 /**
--- line 927 ----------------------------------------
--- line 1038 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .                  *  Note that data access with this operator is unchecked and
-         .          .          .                   .          .          .          .          .          .                  *  out_of_range lookups are not defined. (For checked lookups
-         .          .          .                   .          .          .          .          .          .                  *  see at().)
-         .          .          .                   .          .          .          .          .          .                  */
-         .          .          .                   .          .          .          .          .          .                 reference
-         .          .          .                   .          .          .          .          .          .                 operator[](size_type __n) _GLIBCXX_NOEXCEPT
-         .          .          .                   .          .          .          .          .          .                 {
-         .          .          .                   .          .          .          .          .          .           	__glibcxx_requires_subscript(__n);
-66,000,000 ( 1.90%) 0          0          30,000,000 ( 3.62%) 0          0          0          0          0           	return *(this->_M_impl._M_start + __n);
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 /**
-         .          .          .                   .          .          .          .          .          .                  *  @brief  Subscript access to the data contained in the %vector.
-         .          .          .                   .          .          .          .          .          .                  *  @param __n The index of the element for which data should be
-         .          .          .                   .          .          .          .          .          .                  *  accessed.
-         .          .          .                   .          .          .          .          .          .                  *  @return  Read-only (constant) reference to data.
-         .          .          .                   .          .          .          .          .          .                  *
--- line 1054 ----------------------------------------
--- line 1750 ----------------------------------------
-         .          .          .                   .          .          .          .          .          .                 _M_emplace_aux(const_iterator __position, value_type&& __v)
-         .          .          .                   .          .          .          .          .          .                 { return _M_insert_rval(__position, std::move(__v)); }
-         .          .          .                   .          .          .          .          .          .           #endif
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 // Called by _M_fill_insert, _M_insert_aux etc.
-         .          .          .                   .          .          .          .          .          .                 size_type
-         .          .          .                   .          .          .          .          .          .                 _M_check_len(size_type __n, const char* __s) const
-         .          .          .                   .          .          .          .          .          .                 {
-        72 ( 0.00%) 0          0                   0          0          0          0          0          0           	if (max_size() - size() < __n)
-         .          .          .                   .          .          .          .          .          .           	  __throw_length_error(__N(__s));
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .           	const size_type __len = size() + (std::max)(size(), __n);
-         .          .          .                   .          .          .          .          .          .           	return (__len < size() || __len > max_size()) ? max_size() : __len;
-         .          .          .                   .          .          .          .          .          .                 }
-         .          .          .                   .          .          .          .          .          .           
-         .          .          .                   .          .          .          .          .          .                 // Called by constructors to check initial size.
-         .          .          .                   .          .          .          .          .          .                 static size_type
--- line 1766 ----------------------------------------
 
 --------------------------------------------------------------------------------
 -- Auto-annotated source: /home/juanb3ltran/Documentos/Universidad/Alto_rendimiento/Cream_drop/Main/utils.cpp
@@ -798,6 +363,670 @@ Ir                   I1mr       ILmr       Dr                  D1mr       DLmr  
           3 ( 0.00%) 0          0                   1 ( 0.00%) 0          0                   1 ( 0.00%)  0           0           }
           .          .          .                   .          .          .                   .           .           .           
 
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/ext/new_allocator.h
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                 D1mw       DLmw       
+
+-- line 103 ----------------------------------------
+         .          .          .                   .          .          .                  .          .          .                 allocate(size_type __n, const void* = static_cast<const void*>(0))
+         .          .          .                   .          .          .                  .          .          .                 {
+         .          .          .                   .          .          .                  .          .          .           #if __cplusplus >= 201103L
+         .          .          .                   .          .          .                  .          .          .           	 // _GLIBCXX_RESOLVE_LIB_DEFECTS
+         .          .          .                   .          .          .                  .          .          .           	 // 3308. std::allocator<void>().allocate(n)
+         .          .          .                   .          .          .                  .          .          .           	 static_assert(sizeof(_Tp) != 0, "cannot allocate incomplete types");
+         .          .          .                   .          .          .                  .          .          .           #endif
+         .          .          .                   .          .          .                  .          .          .           
+        16 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                  0          0          0           	if (__builtin_expect(__n > this->_M_max_size(), false))
+         .          .          .                   .          .          .                  .          .          .           	  {
+         .          .          .                   .          .          .                  .          .          .           	    // _GLIBCXX_RESOLVE_LIB_DEFECTS
+         .          .          .                   .          .          .                  .          .          .           	    // 3190. allocator::allocate sometimes returns too little storage
+         .          .          .                   .          .          .                  .          .          .           	    if (__n > (std::size_t(-1) / sizeof(_Tp)))
+         .          .          .                   .          .          .                  .          .          .           	      std::__throw_bad_array_new_length();
+         .          .          .                   .          .          .                  .          .          .           	    std::__throw_bad_alloc();
+         .          .          .                   .          .          .                  .          .          .           	  }
+         .          .          .                   .          .          .                  .          .          .           
+         .          .          .                   .          .          .                  .          .          .           #if __cpp_aligned_new
+         .          .          .                   .          .          .                  .          .          .           	if (alignof(_Tp) > __STDCPP_DEFAULT_NEW_ALIGNMENT__)
+         .          .          .                   .          .          .                  .          .          .           	  {
+         .          .          .                   .          .          .                  .          .          .           	    std::align_val_t __al = std::align_val_t(alignof(_Tp));
+         .          .          .                   .          .          .                  .          .          .           	    return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp), __al));
+         .          .          .                   .          .          .                  .          .          .           	  }
+         .          .          .                   .          .          .                  .          .          .           #endif
+18,000,338 ( 0.52%) 3 ( 0.11%) 3 ( 0.12%)         20 ( 0.00%) 0          0          6,000,108 ( 1.19%) 0          0           	return static_cast<_Tp*>(::operator new(__n * sizeof(_Tp)));
+         .          .          .                   .          .          .                  .          .          .                 }
+         .          .          .                   .          .          .                  .          .          .           
+         .          .          .                   .          .          .                  .          .          .                 // __p is not permitted to be a null pointer.
+         .          .          .                   .          .          .                  .          .          .                 void
+         9 ( 0.00%) 0          0                   0          0          0                  9 ( 0.00%) 0          0                 deallocate(_Tp* __p, size_type __t __attribute__ ((__unused__)))
+         .          .          .                   .          .          .                  .          .          .                 {
+         .          .          .                   .          .          .                  .          .          .           #if __cpp_aligned_new
+         .          .          .                   .          .          .                  .          .          .           	if (alignof(_Tp) > __STDCPP_DEFAULT_NEW_ALIGNMENT__)
+         .          .          .                   .          .          .                  .          .          .           	  {
+         .          .          .                   .          .          .                  .          .          .           	    ::operator delete(__p,
+         .          .          .                   .          .          .                  .          .          .           # if __cpp_sized_deallocation
+         .          .          .                   .          .          .                  .          .          .           			      __t * sizeof(_Tp),
+         .          .          .                   .          .          .                  .          .          .           # endif
+         .          .          .                   .          .          .                  .          .          .           			      std::align_val_t(alignof(_Tp)));
+         .          .          .                   .          .          .                  .          .          .           	    return;
+         .          .          .                   .          .          .                  .          .          .           	  }
+         .          .          .                   .          .          .                  .          .          .           #endif
+36,000,191 ( 1.04%) 0          0          12,000,018 ( 1.45%) 0          0                 86 ( 0.00%) 0          0           	::operator delete(__p
+         .          .          .                   .          .          .                  .          .          .           #if __cpp_sized_deallocation
+         .          .          .                   .          .          .                  .          .          .           			  , __t * sizeof(_Tp)
+         .          .          .                   .          .          .                  .          .          .           #endif
+         .          .          .                   .          .          .                  .          .          .           			 );
+         .          .          .                   .          .          .                  .          .          .                 }
+         .          .          .                   .          .          .                  .          .          .           
+         .          .          .                   .          .          .                  .          .          .           #if __cplusplus <= 201703L
+         .          .          .                   .          .          .                  .          .          .                 size_type
+         .          .          .                   .          .          .                  .          .          .                 max_size() const _GLIBCXX_USE_NOEXCEPT
+         .          .          .                   .          .          .                  .          .          .                 { return _M_max_size(); }
+         .          .          .                   .          .          .                  .          .          .           
+         .          .          .                   .          .          .                  .          .          .           #if __cplusplus >= 201103L
+         .          .          .                   .          .          .                  .          .          .                 template<typename _Up, typename... _Args>
+         .          .          .                   .          .          .                  .          .          .           	void
+       511 ( 0.00%) 0          0                 511 ( 0.00%) 0          0                  0          0          0           	construct(_Up* __p, _Args&&... __args)
+         .          .          .                   .          .          .                  .          .          .           	noexcept(std::is_nothrow_constructible<_Up, _Args...>::value)
+         .          .          .                   .          .          .                  .          .          .           	{ ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+         .          .          .                   .          .          .                  .          .          .           
+         .          .          .                   .          .          .                  .          .          .                 template<typename _Up>
+         .          .          .                   .          .          .                  .          .          .           	void
+         .          .          .                   .          .          .                  .          .          .           	destroy(_Up* __p)
+         .          .          .                   .          .          .                  .          .          .           	noexcept(std::is_nothrow_destructible<_Up>::value)
+         .          .          .                   .          .          .                  .          .          .           	{ __p->~_Up(); }
+-- line 168 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/uniform_int_dist.h
+--------------------------------------------------------------------------------
+Ir                   I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
+
+-- line 185 ----------------------------------------
+          .          .          .                   .          .          .                   .          .          .                 { return this->b(); }
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .                 /**
+          .          .          .                   .          .          .                   .          .          .                  * @brief Generating functions.
+          .          .          .                   .          .          .                   .          .          .                  */
+          .          .          .                   .          .          .                   .          .          .                 template<typename _UniformRandomBitGenerator>
+          .          .          .                   .          .          .                   .          .          .           	result_type
+          .          .          .                   .          .          .                   .          .          .           	operator()(_UniformRandomBitGenerator& __urng)
+ 54,269,811 ( 1.56%) 0          0                   0          0          0          12,059,958 ( 2.39%) 0          0                   { return this->operator()(__urng, _M_param); }
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .                 template<typename _UniformRandomBitGenerator>
+          .          .          .                   .          .          .                   .          .          .           	result_type
+          .          .          .                   .          .          .                   .          .          .           	operator()(_UniformRandomBitGenerator& __urng,
+          .          .          .                   .          .          .                   .          .          .           		   const param_type& __p);
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .                 template<typename _ForwardIterator,
+          .          .          .                   .          .          .                   .          .          .           	       typename _UniformRandomBitGenerator>
+-- line 201 ----------------------------------------
+-- line 250 ----------------------------------------
+          .          .          .                   .          .          .                   .          .          .           	  static_assert(!_Up_traits::__is_signed, "U must be unsigned");
+          .          .          .                   .          .          .                   .          .          .           	  static_assert(!_Wp_traits::__is_signed, "W must be unsigned");
+          .          .          .                   .          .          .                   .          .          .           	  static_assert(_Wp_traits::__digits == (2 * _Up_traits::__digits),
+          .          .          .                   .          .          .                   .          .          .           			"W must be twice as wide as U");
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .           	  // reference: Fast Random Integer Generation in an Interval
+          .          .          .                   .          .          .                   .          .          .           	  // ACM Transactions on Modeling and Computer Simulation 29 (1), 2019
+          .          .          .                   .          .          .                   .          .          .           	  // https://arxiv.org/abs/1805.10941
+ 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	  _Wp __product = _Wp(__g()) * _Wp(__range);
+          .          .          .                   .          .          .                   .          .          .           	  _Up __low = _Up(__product);
+ 36,119,916 ( 1.04%) 0          0                   0          0          0                   0          0          0           	  if (__low < __range)
+          .          .          .                   .          .          .                   .          .          .           	    {
+          .          .          .                   .          .          .                   .          .          .           	      _Up __threshold = -__range % __range;
+          .          .          .                   .          .          .                   .          .          .           	      while (__low < __threshold)
+          .          .          .                   .          .          .                   .          .          .           		{
+          .          .          .                   .          .          .                   .          .          .           		  __product = _Wp(__g()) * _Wp(__range);
+          .          .          .                   .          .          .                   .          .          .           		  __low = _Up(__product);
+          .          .          .                   .          .          .                   .          .          .           		}
+          .          .          .                   .          .          .                   .          .          .           	    }
+ 30,119,916 ( 0.87%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   0          0          0           	  return __product >> _Up_traits::__digits;
+          .          .          .                   .          .          .                   .          .          .           	}
+          .          .          .                   .          .          .                   .          .          .               };
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .             template<typename _IntType>
+          .          .          .                   .          .          .                   .          .          .               template<typename _UniformRandomBitGenerator>
+          .          .          .                   .          .          .                   .          .          .                 typename uniform_int_distribution<_IntType>::result_type
+120,599,580 ( 3.47%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0          72,359,748 (14.31%) 0          0                 uniform_int_distribution<_IntType>::
+          .          .          .                   .          .          .                   .          .          .                 operator()(_UniformRandomBitGenerator& __urng,
+          .          .          .                   .          .          .                   .          .          .           		 const param_type& __param)
+          .          .          .                   .          .          .                   .          .          .                 {
+          .          .          .                   .          .          .                   .          .          .           	typedef typename _UniformRandomBitGenerator::result_type _Gresult_type;
+          .          .          .                   .          .          .                   .          .          .           	typedef typename make_unsigned<result_type>::type __utype;
+          .          .          .                   .          .          .                   .          .          .           	typedef typename common_type<_Gresult_type, __utype>::type __uctype;
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngmin = _UniformRandomBitGenerator::min();
+          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngmax = _UniformRandomBitGenerator::max();
+          .          .          .                   .          .          .                   .          .          .           	static_assert( __urngmin < __urngmax,
+          .          .          .                   .          .          .                   .          .          .           	    "Uniform random bit generator must define min() < max()");
+          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngrange = __urngmax - __urngmin;
+          .          .          .                   .          .          .                   .          .          .           
+ 12,059,958 ( 0.35%) 0          0                   0          0          0                   0          0          0           	const __uctype __urange
+ 12,059,958 ( 0.35%) 0          0                   0          0          0                   0          0          0           	  = __uctype(__param.b()) - __uctype(__param.a());
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .           	__uctype __ret;
+ 54,179,874 ( 1.56%) 0          0                   0          0          0                   0          0          0           	if (__urngrange > __urange)
+          .          .          .                   .          .          .                   .          .          .           	  {
+          .          .          .                   .          .          .                   .          .          .           	    // downscaling
+          .          .          .                   .          .          .                   .          .          .           
+ 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	    const __uctype __uerange = __urange + 1; // __urange can be zero
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .           #if defined __UINT64_TYPE__ && defined __UINT32_TYPE__
+          .          .          .                   .          .          .                   .          .          .           #if __SIZEOF_INT128__
+          .          .          .                   .          .          .                   .          .          .           	    if _GLIBCXX17_CONSTEXPR (__urngrange == __UINT64_MAX__)
+          .          .          .                   .          .          .                   .          .          .           	      {
+          .          .          .                   .          .          .                   .          .          .           		// __urng produces values that use exactly 64-bits,
+          .          .          .                   .          .          .                   .          .          .           		// so use 128-bit integers to downscale to desired range.
+          .          .          .                   .          .          .                   .          .          .           		__UINT64_TYPE__ __u64erange = __uerange;
+-- line 306 ----------------------------------------
+-- line 307 ----------------------------------------
+          .          .          .                   .          .          .                   .          .          .           		__ret = _S_nd<unsigned __int128>(__urng, __u64erange);
+          .          .          .                   .          .          .                   .          .          .           	      }
+          .          .          .                   .          .          .                   .          .          .           	    else
+          .          .          .                   .          .          .                   .          .          .           #endif
+          .          .          .                   .          .          .                   .          .          .           	    if _GLIBCXX17_CONSTEXPR (__urngrange == __UINT32_MAX__)
+          .          .          .                   .          .          .                   .          .          .           	      {
+          .          .          .                   .          .          .                   .          .          .           		// __urng produces values that use exactly 32-bits,
+          .          .          .                   .          .          .                   .          .          .           		// so use 64-bit integers to downscale to desired range.
+ 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           		__UINT32_TYPE__ __u32erange = __uerange;
+          .          .          .                   .          .          .                   .          .          .           		__ret = _S_nd<__UINT64_TYPE__>(__urng, __u32erange);
+          .          .          .                   .          .          .                   .          .          .           	      }
+          .          .          .                   .          .          .                   .          .          .           	    else
+          .          .          .                   .          .          .                   .          .          .           #endif
+          .          .          .                   .          .          .                   .          .          .           	      {
+          .          .          .                   .          .          .                   .          .          .           		// fallback case (2 divisions)
+          .          .          .                   .          .          .                   .          .          .           		const __uctype __scaling = __urngrange / __uerange;
+          .          .          .                   .          .          .                   .          .          .           		const __uctype __past = __uerange * __scaling;
+-- line 323 ----------------------------------------
+-- line 352 ----------------------------------------
+          .          .          .                   .          .          .                   .          .          .           			 (__urng, param_type(0, __urange / __uerngrange)));
+          .          .          .                   .          .          .                   .          .          .           		__ret = __tmp + (__uctype(__urng()) - __urngmin);
+          .          .          .                   .          .          .                   .          .          .           	      }
+          .          .          .                   .          .          .                   .          .          .           	    while (__ret > __urange || __ret < __tmp);
+          .          .          .                   .          .          .                   .          .          .           	  }
+          .          .          .                   .          .          .                   .          .          .           	else
+          .          .          .                   .          .          .                   .          .          .           	  __ret = __uctype(__urng()) - __urngmin;
+          .          .          .                   .          .          .                   .          .          .           
+ 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	return __ret + __param.a();
+ 96,479,664 ( 2.78%) 0          0          84,419,706 (10.17%) 0          0                   0          0          0                 }
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .           
+          .          .          .                   .          .          .                   .          .          .             template<typename _IntType>
+          .          .          .                   .          .          .                   .          .          .               template<typename _ForwardIterator,
+          .          .          .                   .          .          .                   .          .          .           	     typename _UniformRandomBitGenerator>
+          .          .          .                   .          .          .                   .          .          .                 void
+          .          .          .                   .          .          .                   .          .          .                 uniform_int_distribution<_IntType>::
+          .          .          .                   .          .          .                   .          .          .                 __generate_impl(_ForwardIterator __f, _ForwardIterator __t,
+-- line 369 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/unordered_map.h
+--------------------------------------------------------------------------------
+Ir                 I1mr       ILmr       Dr         D1mr       DLmr       Dw                 D1mw       DLmw       
+
+-- line 94 ----------------------------------------
+        .          .          .          .          .          .                  .          .          .              *
+        .          .          .          .          .          .                  .          .          .              *  Base is _Hashtable, dispatched at compile time via template
+        .          .          .          .          .          .                  .          .          .              *  alias __umap_hashtable.
+        .          .          .          .          .          .                  .          .          .              */
+        .          .          .          .          .          .                  .          .          .             template<typename _Key, typename _Tp,
+        .          .          .          .          .          .                  .          .          .           	   typename _Hash = hash<_Key>,
+        .          .          .          .          .          .                  .          .          .           	   typename _Pred = equal_to<_Key>,
+        .          .          .          .          .          .                  .          .          .           	   typename _Alloc = allocator<std::pair<const _Key, _Tp>>>
+        2 ( 0.00%) 0          0          0          0          0                  1 ( 0.00%) 0          0               class unordered_map
+        .          .          .          .          .          .                  .          .          .               {
+        .          .          .          .          .          .                  .          .          .                 typedef __umap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc>  _Hashtable;
+        .          .          .          .          .          .                  .          .          .                 _Hashtable _M_h;
+        .          .          .          .          .          .                  .          .          .           
+        .          .          .          .          .          .                  .          .          .               public:
+        .          .          .          .          .          .                  .          .          .                 // typedefs:
+        .          .          .          .          .          .                  .          .          .                 ///@{
+        .          .          .          .          .          .                  .          .          .                 /// Public typedefs.
+-- line 110 ----------------------------------------
+-- line 976 ----------------------------------------
+        .          .          .          .          .          .                  .          .          .                  *  Lookup requires constant time.
+        .          .          .          .          .          .                  .          .          .                  */
+        .          .          .          .          .          .                  .          .          .                 mapped_type&
+        .          .          .          .          .          .                  .          .          .                 operator[](const key_type& __k)
+        .          .          .          .          .          .                  .          .          .                 { return _M_h[__k]; }
+        .          .          .          .          .          .                  .          .          .           
+        .          .          .          .          .          .                  .          .          .                 mapped_type&
+        .          .          .          .          .          .                  .          .          .                 operator[](key_type&& __k)
+5,780,420 ( 0.17%) 2 ( 0.08%) 2 ( 0.08%) 0          0          0          2,023,267 ( 0.40%) 0          0                 { return _M_h[std::move(__k)]; }
+        .          .          .          .          .          .                  .          .          .                 ///@}
+        .          .          .          .          .          .                  .          .          .           
+        .          .          .          .          .          .                  .          .          .                 ///@{
+        .          .          .          .          .          .                  .          .          .                 /**
+        .          .          .          .          .          .                  .          .          .                  *  @brief  Access to %unordered_map data.
+        .          .          .          .          .          .                  .          .          .                  *  @param  __k  The key for which data should be retrieved.
+        .          .          .          .          .          .                  .          .          .                  *  @return  A reference to the data whose key is equal to @a __k, if
+        .          .          .          .          .          .                  .          .          .                  *           such a data is present in the %unordered_map.
+-- line 992 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/hashtable_policy.h
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr        DLmr       Dw                  D1mw       DLmw       
+
+-- line 211 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .              *  template parameter of class template _Hashtable controls whether
+         .          .          .                   .           .          .                   .          .          .              *  nodes also store a hash code. In some cases (e.g. strings) this
+         .          .          .                   .           .          .                   .          .          .              *  may be a performance win.
+         .          .          .                   .           .          .                   .          .          .              */
+         .          .          .                   .           .          .                   .          .          .             struct _Hash_node_base
+         .          .          .                   .           .          .                   .          .          .             {
+         .          .          .                   .           .          .                   .          .          .               _Hash_node_base* _M_nxt;
+         .          .          .                   .           .          .                   .          .          .           
+        65 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0           0          0                  65 ( 0.00%) 0          0               _Hash_node_base() noexcept : _M_nxt() { }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .               _Hash_node_base(_Hash_node_base* __next) noexcept : _M_nxt(__next) { }
+         .          .          .                   .           .          .                   .          .          .             };
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             /**
+         .          .          .                   .           .          .                   .          .          .              *  struct _Hash_node_value_base
+         .          .          .                   .           .          .                   .          .          .              *
+         .          .          .                   .           .          .                   .          .          .              *  Node type with the value to store.
+-- line 227 ----------------------------------------
+-- line 274 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .              *  Primary template struct _Hash_node.
+         .          .          .                   .           .          .                   .          .          .              */
+         .          .          .                   .           .          .                   .          .          .             template<typename _Value, bool _Cache_hash_code>
+         .          .          .                   .           .          .                   .          .          .               struct _Hash_node
+         .          .          .                   .           .          .                   .          .          .               : _Hash_node_base
+         .          .          .                   .           .          .                   .          .          .               , _Hash_node_value<_Value, _Cache_hash_code>
+         .          .          .                   .           .          .                   .          .          .               {
+         .          .          .                   .           .          .                   .          .          .                 _Hash_node*
+       165 ( 0.00%) 0          0                   0           0          0                   0          0          0                 _M_next() const noexcept
+       169 ( 0.00%) 0          0                 169 ( 0.00%) 13 ( 0.09%) 0                   0          0          0                 { return static_cast<_Hash_node*>(this->_M_nxt); }
+         .          .          .                   .           .          .                   .          .          .               };
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             /// Base class for node iterators.
+         .          .          .                   .           .          .                   .          .          .             template<typename _Value, bool _Cache_hash_code>
+         .          .          .                   .           .          .                   .          .          .               struct _Node_iterator_base
+         .          .          .                   .           .          .                   .          .          .               {
+         .          .          .                   .           .          .                   .          .          .                 using __node_type = _Hash_node<_Value, _Cache_hash_code>;
+         .          .          .                   .           .          .                   .          .          .           
+-- line 291 ----------------------------------------
+-- line 422 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .             {
+         .          .          .                   .           .          .                   .          .          .               typedef std::size_t first_argument_type;
+         .          .          .                   .           .          .                   .          .          .               typedef std::size_t second_argument_type;
+         .          .          .                   .           .          .                   .          .          .               typedef std::size_t result_type;
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .               result_type
+         .          .          .                   .           .          .                   .          .          .               operator()(first_argument_type __num,
+         .          .          .                   .           .          .                   .          .          .           	       second_argument_type __den) const noexcept
+ 5,205,058 ( 0.15%) 1 ( 0.04%) 1 ( 0.04%)         59 ( 0.00%)  0          0                   0          0          0               { return __num % __den; }
+         .          .          .                   .           .          .                   .          .          .             };
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             /// Default ranged hash function H.  In principle it should be a
+         .          .          .                   .           .          .                   .          .          .             /// function object composed from objects of type H1 and H2 such that
+         .          .          .                   .           .          .                   .          .          .             /// h(k, N) = h2(h1(k), N), but that would mean making extra copies of
+         .          .          .                   .           .          .                   .          .          .             /// h1 and h2.  So instead we'll just use a tag to tell class template
+         .          .          .                   .           .          .                   .          .          .             /// hashtable to do that composition.
+         .          .          .                   .           .          .                   .          .          .             struct _Default_ranged_hash { };
+-- line 438 ----------------------------------------
+-- line 439 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             /// Default value for rehash policy.  Bucket size is (usually) the
+         .          .          .                   .           .          .                   .          .          .             /// smallest prime that keeps the load factor small enough.
+         .          .          .                   .           .          .                   .          .          .             struct _Prime_rehash_policy
+         .          .          .                   .           .          .                   .          .          .             {
+         .          .          .                   .           .          .                   .          .          .               using __has_load_factor = true_type;
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .               _Prime_rehash_policy(float __z = 1.0) noexcept
+         2 ( 0.00%) 0          0                   0           0          0                   2 ( 0.00%) 0          0               : _M_max_load_factor(__z), _M_next_resize(0) { }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .               float
+         .          .          .                   .           .          .                   .          .          .               max_load_factor() const noexcept
+         .          .          .                   .           .          .                   .          .          .               { return _M_max_load_factor; }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .               // Return a bucket size no smaller than n.
+         .          .          .                   .           .          .                   .          .          .               std::size_t
+         .          .          .                   .           .          .                   .          .          .               _M_next_bkt(std::size_t __n) const;
+-- line 455 ----------------------------------------
+-- line 715 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .                 __node._M_node = nullptr;
+         .          .          .                   .           .          .                   .          .          .                 return __pos->second;
+         .          .          .                   .           .          .                   .          .          .               }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             template<typename _Key, typename _Pair, typename _Alloc, typename _Equal,
+         .          .          .                   .           .          .                   .          .          .           	   typename _Hash, typename _RangeHash, typename _Unused,
+         .          .          .                   .           .          .                   .          .          .           	   typename _RehashPolicy, typename _Traits>
+         .          .          .                   .           .          .                   .          .          .               auto
+20,811,432 ( 0.60%) 2 ( 0.08%) 2 ( 0.08%)  1,734,286 ( 0.21%)  0          0          10,405,716 ( 2.06%) 0          0               _Map_base<_Key, _Pair, _Alloc, _Select1st, _Equal,
+         .          .          .                   .           .          .                   .          .          .           	      _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits, true>::
+         .          .          .                   .           .          .                   .          .          .               operator[](key_type&& __k)
+         .          .          .                   .           .          .                   .          .          .               -> mapped_type&
+         .          .          .                   .           .          .                   .          .          .               {
+         .          .          .                   .           .          .                   .          .          .                 __hashtable* __h = static_cast<__hashtable*>(this);
+         .          .          .                   .           .          .                   .          .          .                 __hash_code __code = __h->_M_hash_code(__k);
+         .          .          .                   .           .          .                   .          .          .                 std::size_t __bkt = __h->_M_bucket_index(__code);
+         .          .          .                   .           .          .                   .          .          .                 if (auto __node = __h->_M_find_node(__bkt, __k, __code))
+ 1,734,222 ( 0.05%) 0          0                   0           0          0                   0          0          0           	return __node->_M_v().second;
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 typename __hashtable::_Scoped_node __node {
+         .          .          .                   .           .          .                   .          .          .           	__h,
+         .          .          .                   .           .          .                   .          .          .           	std::piecewise_construct,
+         .          .          .                   .           .          .                   .          .          .           	std::forward_as_tuple(std::move(__k)),
+         .          .          .                   .           .          .                   .          .          .           	std::tuple<>()
+         .          .          .                   .           .          .                   .          .          .                 };
+         .          .          .                   .           .          .                   .          .          .                 auto __pos
+         .          .          .                   .           .          .                   .          .          .           	= __h->_M_insert_unique_node(__bkt, __code, __node._M_node);
+         .          .          .                   .           .          .                   .          .          .                 __node._M_node = nullptr;
+        64 ( 0.00%) 0          0                   0           0          0                   0          0          0                 return __pos->second;
+17,342,860 ( 0.50%) 0          0          13,874,288 ( 1.67%)  0          0                   0          0          0               }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             template<typename _Key, typename _Pair, typename _Alloc, typename _Equal,
+         .          .          .                   .           .          .                   .          .          .           	   typename _Hash, typename _RangeHash, typename _Unused,
+         .          .          .                   .           .          .                   .          .          .           	   typename _RehashPolicy, typename _Traits>
+         .          .          .                   .           .          .                   .          .          .               auto
+         .          .          .                   .           .          .                   .          .          .               _Map_base<_Key, _Pair, _Alloc, _Select1st, _Equal,
+         .          .          .                   .           .          .                   .          .          .           	      _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits, true>::
+         .          .          .                   .           .          .                   .          .          .               at(const key_type& __k)
+-- line 752 ----------------------------------------
+-- line 1211 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 _Hash_code_base(const _Hash& __hash) : __ebo_hash(__hash) { }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 __hash_code
+         .          .          .                   .           .          .                   .          .          .                 _M_hash_code(const _Key& __k) const
+         .          .          .                   .           .          .                   .          .          .                 {
+         .          .          .                   .           .          .                   .          .          .           	static_assert(__is_invocable<const _Hash&, const _Key&>{},
+         .          .          .                   .           .          .                   .          .          .           	    "hash function must be invocable with an argument of key type");
+ 1,736,162 ( 0.05%) 0          0           1,735,224 ( 0.21%)  0          0                   0          0          0           	return _M_hash()(__k);
+         .          .          .                   .           .          .                   .          .          .                 }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 template<typename _Kt>
+         .          .          .                   .           .          .                   .          .          .           	__hash_code
+         .          .          .                   .           .          .                   .          .          .           	_M_hash_code_tr(const _Kt& __k) const
+         .          .          .                   .           .          .                   .          .          .           	{
+         .          .          .                   .           .          .                   .          .          .           	  static_assert(__is_invocable<const _Hash&, const _Kt&>{},
+         .          .          .                   .           .          .                   .          .          .           	    "hash function must be invocable with an argument of key type");
+-- line 1227 ----------------------------------------
+-- line 1609 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 bool
+         .          .          .                   .           .          .                   .          .          .                 _M_equals(const _Key& __k, __hash_code __c,
+         .          .          .                   .           .          .                   .          .          .           		const _Hash_node_value<_Value, __hash_cached::value>& __n) const
+         .          .          .                   .           .          .                   .          .          .                 {
+         .          .          .                   .           .          .                   .          .          .           	static_assert(__is_invocable<const _Equal&, const _Key&, const _Key&>{},
+         .          .          .                   .           .          .                   .          .          .           	  "key equality predicate must be invocable with two arguments of "
+         .          .          .                   .           .          .                   .          .          .           	  "key type");
+ 3,470,320 ( 0.10%) 0          0                   0           0          0                   0          0          0           	return _S_equals(__c, __n) && _M_eq()(__k, _ExtractKey{}(__n._M_v()));
+         .          .          .                   .           .          .                   .          .          .                 }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 template<typename _Kt>
+         .          .          .                   .           .          .                   .          .          .           	bool
+         .          .          .                   .           .          .                   .          .          .           	_M_equals_tr(const _Kt& __k, __hash_code __c,
+         .          .          .                   .           .          .                   .          .          .           		     const _Hash_node_value<_Value,
+         .          .          .                   .           .          .                   .          .          .           					    __hash_cached::value>& __n) const
+         .          .          .                   .           .          .                   .          .          .           	{
+-- line 1625 ----------------------------------------
+-- line 1904 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .                 __n->~__node_type();
+         .          .          .                   .           .          .                   .          .          .                 __node_alloc_traits::deallocate(_M_node_allocator(), __ptr, 1);
+         .          .          .                   .           .          .                   .          .          .               }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
+         .          .          .                   .           .          .                   .          .          .               void
+         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::_M_deallocate_nodes(__node_ptr __n)
+         .          .          .                   .           .          .                   .          .          .               {
+       131 ( 0.00%) 0          0                   0           0          0                   0          0          0                 while (__n)
+         .          .          .                   .           .          .                   .          .          .           	{
+         .          .          .                   .           .          .                   .          .          .           	  __node_ptr __tmp = __n;
+         .          .          .                   .           .          .                   .          .          .           	  __n = __n->_M_next();
+         .          .          .                   .           .          .                   .          .          .           	  _M_deallocate_node(__tmp);
+         .          .          .                   .           .          .                   .          .          .           	}
+         .          .          .                   .           .          .                   .          .          .               }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
+-- line 1920 ----------------------------------------
+-- line 1921 ----------------------------------------
+         .          .          .                   .           .          .                   .          .          .               auto
+         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::_M_allocate_buckets(std::size_t __bkt_count)
+         .          .          .                   .           .          .                   .          .          .               -> __buckets_ptr
+         .          .          .                   .           .          .                   .          .          .               {
+         .          .          .                   .           .          .                   .          .          .                 __buckets_alloc_type __alloc(_M_node_allocator());
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .                 auto __ptr = __buckets_alloc_traits::allocate(__alloc, __bkt_count);
+         .          .          .                   .           .          .                   .          .          .                 __buckets_ptr __p = std::__to_address(__ptr);
+        16 ( 0.00%) 0          0                   0           0          0                   4 ( 0.00%) 0          0                 __builtin_memset(__p, 0, __bkt_count * sizeof(__node_base_ptr));
+         .          .          .                   .           .          .                   .          .          .                 return __p;
+         .          .          .                   .           .          .                   .          .          .               }
+         .          .          .                   .           .          .                   .          .          .           
+         .          .          .                   .           .          .                   .          .          .             template<typename _NodeAlloc>
+         .          .          .                   .           .          .                   .          .          .               void
+         .          .          .                   .           .          .                   .          .          .               _Hashtable_alloc<_NodeAlloc>::
+         .          .          .                   .           .          .                   .          .          .               _M_deallocate_buckets(__buckets_ptr __bkts,
+         .          .          .                   .           .          .                   .          .          .           			  std::size_t __bkt_count)
+-- line 1937 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/stl_algobase.h
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
+
+-- line 423 ----------------------------------------
+         .          .          .                   .          .          .                   .          .          .           	  using __assignable = conditional<_IsMove,
+         .          .          .                   .          .          .                   .          .          .           					   is_move_assignable<_Tp>,
+         .          .          .                   .          .          .                   .          .          .           					   is_copy_assignable<_Tp>>;
+         .          .          .                   .          .          .                   .          .          .           	  // trivial types can have deleted assignment
+         .          .          .                   .          .          .                   .          .          .           	  static_assert( __assignable::type::value, "type is not assignable" );
+         .          .          .                   .          .          .                   .          .          .           #endif
+         .          .          .                   .          .          .                   .          .          .           	  const ptrdiff_t _Num = __last - __first;
+         .          .          .                   .          .          .                   .          .          .           	  if (_Num)
+24,000,000 ( 0.69%) 0          0          12,000,000 ( 1.45%) 0          0          12,000,000 ( 2.37%) 0          0           	    __builtin_memmove(__result, __first, sizeof(_Tp) * _Num);
+         .          .          .                   .          .          .                   .          .          .           	  return __result + _Num;
+         .          .          .                   .          .          .                   .          .          .           	}
+         .          .          .                   .          .          .                   .          .          .               };
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .           _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .             template<typename _Tp, typename _Ref, typename _Ptr>
+         .          .          .                   .          .          .                   .          .          .               struct _Deque_iterator;
+-- line 439 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /usr/include/c++/11/bits/stl_vector.h
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw         D1mw       DLmw       
+
+-- line 90 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 struct _Vector_impl_data
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	pointer _M_start;
+         .          .          .                   .          .          .          .          .          .           	pointer _M_finish;
+         .          .          .                   .          .          .          .          .          .           	pointer _M_end_of_storage;
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .           	_Vector_impl_data() _GLIBCXX_NOEXCEPT
+         4 ( 0.00%) 0          0                   0          0          0          2 ( 0.00%) 0          0           	: _M_start(), _M_finish(), _M_end_of_storage()
+         .          .          .                   .          .          .          .          .          .           	{ }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .           #if __cplusplus >= 201103L
+         .          .          .                   .          .          .          .          .          .           	_Vector_impl_data(_Vector_impl_data&& __x) noexcept
+         .          .          .                   .          .          .          .          .          .           	: _M_start(__x._M_start), _M_finish(__x._M_finish),
+         .          .          .                   .          .          .          .          .          .           	  _M_end_of_storage(__x._M_end_of_storage)
+         .          .          .                   .          .          .          .          .          .           	{ __x._M_start = __x._M_finish = __x._M_end_of_storage = pointer(); }
+         .          .          .                   .          .          .          .          .          .           #endif
+-- line 106 ----------------------------------------
+-- line 328 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .                 _Vector_base(const allocator_type& __a, _Vector_base&& __x)
+         .          .          .                   .          .          .          .          .          .                 : _M_impl(_Tp_alloc_type(__a), std::move(__x._M_impl))
+         .          .          .                   .          .          .          .          .          .                 { }
+         .          .          .                   .          .          .          .          .          .           #endif
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 ~_Vector_base() _GLIBCXX_NOEXCEPT
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	_M_deallocate(_M_impl._M_start,
+         2 ( 0.00%) 0          0                   1 ( 0.00%) 0          0          0          0          0           		      _M_impl._M_end_of_storage - _M_impl._M_start);
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .               public:
+         .          .          .                   .          .          .          .          .          .                 _Vector_impl _M_impl;
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 pointer
+         .          .          .                   .          .          .          .          .          .                 _M_allocate(size_t __n)
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
+        20 ( 0.00%) 0          0                   0          0          0          0          0          0           	return __n != 0 ? _Tr::allocate(_M_impl, __n) : pointer();
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 void
+         .          .          .                   .          .          .          .          .          .                 _M_deallocate(pointer __p, size_t __n)
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Tr;
+        22 ( 0.00%) 0          0                   0          0          0          0          0          0           	if (__p)
+         .          .          .                   .          .          .          .          .          .           	  _Tr::deallocate(_M_impl, __p, __n);
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .               protected:
+         .          .          .                   .          .          .          .          .          .                 void
+         .          .          .                   .          .          .          .          .          .                 _M_create_storage(size_t __n)
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	this->_M_impl._M_start = this->_M_allocate(__n);
+-- line 361 ----------------------------------------
+-- line 672 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .                 /**
+         .          .          .                   .          .          .          .          .          .                  *  The dtor only erases the elements, and note that if the
+         .          .          .                   .          .          .          .          .          .                  *  elements themselves are pointers, the pointed-to memory is
+         .          .          .                   .          .          .          .          .          .                  *  not touched in any way.  Managing the pointer is the user's
+         .          .          .                   .          .          .          .          .          .                  *  responsibility.
+         .          .          .                   .          .          .          .          .          .                  */
+         .          .          .                   .          .          .          .          .          .                 ~vector() _GLIBCXX_NOEXCEPT
+         .          .          .                   .          .          .          .          .          .                 {
+         1 ( 0.00%) 0          0                   1 ( 0.00%) 0          0          0          0          0           	std::_Destroy(this->_M_impl._M_start, this->_M_impl._M_finish,
+         .          .          .                   .          .          .          .          .          .           		      _M_get_Tp_allocator());
+         .          .          .                   .          .          .          .          .          .           	_GLIBCXX_ASAN_ANNOTATE_BEFORE_DEALLOC;
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 /**
+         .          .          .                   .          .          .          .          .          .                  *  @brief  %Vector assignment operator.
+         .          .          .                   .          .          .          .          .          .                  *  @param  __x  A %vector of identical element and allocator types.
+         .          .          .                   .          .          .          .          .          .                  *
+-- line 688 ----------------------------------------
+-- line 911 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .                 crend() const noexcept
+         .          .          .                   .          .          .          .          .          .                 { return const_reverse_iterator(begin()); }
+         .          .          .                   .          .          .          .          .          .           #endif
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 // [23.2.4.2] capacity
+         .          .          .                   .          .          .          .          .          .                 /**  Returns the number of elements in the %vector.  */
+         .          .          .                   .          .          .          .          .          .                 size_type
+         .          .          .                   .          .          .          .          .          .                 size() const _GLIBCXX_NOEXCEPT
+        44 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 0          0          0          0          0                 { return size_type(this->_M_impl._M_finish - this->_M_impl._M_start); }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 /**  Returns the size() of the largest possible %vector.  */
+         .          .          .                   .          .          .          .          .          .                 size_type
+         .          .          .                   .          .          .          .          .          .                 max_size() const _GLIBCXX_NOEXCEPT
+         .          .          .                   .          .          .          .          .          .                 { return _S_max_size(_M_get_Tp_allocator()); }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .           #if __cplusplus >= 201103L
+         .          .          .                   .          .          .          .          .          .                 /**
+-- line 927 ----------------------------------------
+-- line 1038 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .                  *  Note that data access with this operator is unchecked and
+         .          .          .                   .          .          .          .          .          .                  *  out_of_range lookups are not defined. (For checked lookups
+         .          .          .                   .          .          .          .          .          .                  *  see at().)
+         .          .          .                   .          .          .          .          .          .                  */
+         .          .          .                   .          .          .          .          .          .                 reference
+         .          .          .                   .          .          .          .          .          .                 operator[](size_type __n) _GLIBCXX_NOEXCEPT
+         .          .          .                   .          .          .          .          .          .                 {
+         .          .          .                   .          .          .          .          .          .           	__glibcxx_requires_subscript(__n);
+66,000,000 ( 1.90%) 0          0          30,000,000 ( 3.62%) 0          0          0          0          0           	return *(this->_M_impl._M_start + __n);
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 /**
+         .          .          .                   .          .          .          .          .          .                  *  @brief  Subscript access to the data contained in the %vector.
+         .          .          .                   .          .          .          .          .          .                  *  @param __n The index of the element for which data should be
+         .          .          .                   .          .          .          .          .          .                  *  accessed.
+         .          .          .                   .          .          .          .          .          .                  *  @return  Read-only (constant) reference to data.
+         .          .          .                   .          .          .          .          .          .                  *
+-- line 1054 ----------------------------------------
+-- line 1750 ----------------------------------------
+         .          .          .                   .          .          .          .          .          .                 _M_emplace_aux(const_iterator __position, value_type&& __v)
+         .          .          .                   .          .          .          .          .          .                 { return _M_insert_rval(__position, std::move(__v)); }
+         .          .          .                   .          .          .          .          .          .           #endif
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 // Called by _M_fill_insert, _M_insert_aux etc.
+         .          .          .                   .          .          .          .          .          .                 size_type
+         .          .          .                   .          .          .          .          .          .                 _M_check_len(size_type __n, const char* __s) const
+         .          .          .                   .          .          .          .          .          .                 {
+        72 ( 0.00%) 0          0                   0          0          0          0          0          0           	if (max_size() - size() < __n)
+         .          .          .                   .          .          .          .          .          .           	  __throw_length_error(__N(__s));
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .           	const size_type __len = size() + (std::max)(size(), __n);
+         .          .          .                   .          .          .          .          .          .           	return (__len < size() || __len > max_size()) ? max_size() : __len;
+         .          .          .                   .          .          .          .          .          .                 }
+         .          .          .                   .          .          .          .          .          .           
+         .          .          .                   .          .          .          .          .          .                 // Called by constructors to check initial size.
+         .          .          .                   .          .          .          .          .          .                 static size_type
+-- line 1766 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/juanb3ltran/Documentos/Universidad/Alto_rendimiento/Cream_drop/Main/main.cpp
+--------------------------------------------------------------------------------
+Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
+
+         .          .          .                   .          .          .                   .          .          .           #include "utils.hpp"
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .           
+        13 ( 0.00%) 2 ( 0.08%) 2 ( 0.08%)          2 ( 0.00%) 1 ( 0.01%) 0                   7 ( 0.00%) 0          0           int main(int argc, char *argv[]) {
+         .          .          .                   .          .          .                   .          .          .               //Declara variables
+         .          .          .                   .          .          .                   .          .          .               int t_final, N_particles, divisions, seed;    
+         .          .          .                   .          .          .                   .          .          .               double size, x_min, x_max, y_min, y_max;
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .               //lee el input asumiendo que cada valor tiene un comentario (que debe ser ignorado)
+        10 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 1 ( 0.04%) 0               std::cin >> N_particles; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+         4 ( 0.00%) 0          0                   0          0          0                   1 ( 0.00%) 0          0               std::cin >> size; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+         7 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 0          0               std::cin >> t_final; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+         7 ( 0.00%) 0          0                   0          0          0                   2 ( 0.00%) 0          0               std::cin >> divisions; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+         7 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 0          0               std::cin >> seed; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .               // limites del contenedor
+         4 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 1 ( 0.01%) 1 ( 0.01%)          2 ( 0.00%) 0          0               x_min=-size;
+         .          .          .                   .          .          .                   .          .          .               x_max=size;
+         .          .          .                   .          .          .                   .          .          .               y_min=-size;
+         .          .          .                   .          .          .                   .          .          .               y_max=size;
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .               //Crea el vector de particulas y el generador aleatorio
+         .          .          .                   .          .          .                   .          .          .               std::vector<Particle> balls;
+         .          .          .                   .          .          .                   .          .          .               std::mt19937 gen(seed);
+         .          .          .                   .          .          .                   .          .          .           
+         .          .          .                   .          .          .                   .          .          .               // Inicializa n objetos de la clase Particle y los añade al vector
+         5 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 0          0                   1 ( 0.00%) 0          0               inicializar(balls, N_particles, size);
+         .          .          .                   .          .          .                   .          .          .               //grid entropy
+         .          .          .                   .          .          .                   .          .          .               std::unordered_map<int,int> grid_counts;
+     2,005 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)        400 ( 0.00%) 0          0                 400 ( 0.00%) 0          0               for (auto ball : balls){
+     5,600 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)      1,600 ( 0.00%) 0          0               1,600 ( 0.00%) 0          0                   counts(grid_counts, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
+         .          .          .                   .          .          .                   .          .          .               }
+         4 ( 0.00%) 0          0                   1 ( 0.00%) 0          0                   2 ( 0.00%) 0          0               double entropy = compute_entropy(grid_counts, N_particles);
+         .          .          .                   .          .          .                   .          .          .              
+         .          .          .                   .          .          .                   .          .          .               int coin;
+18,000,005 ( 0.52%) 0          0           6,000,001 ( 0.72%) 0          0                   0          0          0               for (int i = 0; i < t_final; i++)
+         .          .          .                   .          .          .                   .          .          .               {
+         .          .          .                   .          .          .                   .          .          .                   
+30,000,000 ( 0.86%) 1 ( 0.04%) 1 ( 0.04%)  6,000,000 ( 0.72%) 0          0           6,000,000 ( 1.19%) 0          0                   coin = getRandomInt(N_particles-1, gen); //Selecciona que particula se movera
+         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
+18,000,000 ( 0.52%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double old_x = balls[coin].getX();
+12,000,000 ( 0.35%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double old_y = balls[coin].getY();
+48,000,000 ( 1.38%) 1 ( 0.04%) 1 ( 0.04%) 18,000,000 ( 2.17%) 0          0           6,000,000 ( 1.19%) 0          0                   balls[coin].moveRandom(1, x_min, x_max, y_min, y_max, gen);        
+         .          .          .                   .          .          .                   .          .          .                   
+         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
+12,000,000 ( 0.35%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0          12,000,000 ( 2.37%) 0          0                   double new_x = balls[coin].getX();
+12,000,000 ( 0.35%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double new_y = balls[coin].getY();
+         .          .          .                   .          .          .                   .          .          .                   
+         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Calcula el cambio en la entropia (2 casos) %%%%%%%%%%%%%
+66,000,000 ( 1.90%) 1 ( 0.04%) 1 ( 0.04%) 30,000,000 ( 3.62%) 0          0           6,000,000 ( 1.19%) 0          0                   double ds = delta_entropy(grid_counts, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
+12,000,000 ( 0.35%) 0          0           6,000,000 ( 0.72%) 0          0           6,000,000 ( 1.19%) 0          0                   entropy += ds;
+         .          .          .                   .          .          .                   .          .          .                
+         .          .          .                   .          .          .                   .          .          .                   
+         .          .          .                   .          .          .                   .          .          .               }
+         .          .          .                   .          .          .                   .          .          .               std::cout<<"Entropía final: "<<entropy;
+         .          .          .                   .          .          .                   .          .          .               return 0;
+        15 ( 0.00%) 2 ( 0.08%) 1 ( 0.04%)         10 ( 0.00%) 1 ( 0.01%) 0                   1 ( 0.00%) 0          0           }
 --------------------------------------------------------------------------------
 -- Auto-annotated source: /usr/include/c++/11/bits/hashtable.h
 --------------------------------------------------------------------------------
@@ -1144,235 +1373,6 @@ Ir                 I1mr       ILmr       Dr                 D1mr       DLmr     
         .          .          .                  .          .          .            .          .          .           	   typename _Hash, typename _RangeHash, typename _Unused,
         .          .          .                  .          .          .            .          .          .           	   typename _RehashPolicy, typename _Traits>
 -- line 2419 ----------------------------------------
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/bits/unordered_map.h
---------------------------------------------------------------------------------
-Ir                 I1mr       ILmr       Dr         D1mr       DLmr       Dw                 D1mw       DLmw       
-
--- line 94 ----------------------------------------
-        .          .          .          .          .          .                  .          .          .              *
-        .          .          .          .          .          .                  .          .          .              *  Base is _Hashtable, dispatched at compile time via template
-        .          .          .          .          .          .                  .          .          .              *  alias __umap_hashtable.
-        .          .          .          .          .          .                  .          .          .              */
-        .          .          .          .          .          .                  .          .          .             template<typename _Key, typename _Tp,
-        .          .          .          .          .          .                  .          .          .           	   typename _Hash = hash<_Key>,
-        .          .          .          .          .          .                  .          .          .           	   typename _Pred = equal_to<_Key>,
-        .          .          .          .          .          .                  .          .          .           	   typename _Alloc = allocator<std::pair<const _Key, _Tp>>>
-        2 ( 0.00%) 0          0          0          0          0                  1 ( 0.00%) 0          0               class unordered_map
-        .          .          .          .          .          .                  .          .          .               {
-        .          .          .          .          .          .                  .          .          .                 typedef __umap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc>  _Hashtable;
-        .          .          .          .          .          .                  .          .          .                 _Hashtable _M_h;
-        .          .          .          .          .          .                  .          .          .           
-        .          .          .          .          .          .                  .          .          .               public:
-        .          .          .          .          .          .                  .          .          .                 // typedefs:
-        .          .          .          .          .          .                  .          .          .                 ///@{
-        .          .          .          .          .          .                  .          .          .                 /// Public typedefs.
--- line 110 ----------------------------------------
--- line 976 ----------------------------------------
-        .          .          .          .          .          .                  .          .          .                  *  Lookup requires constant time.
-        .          .          .          .          .          .                  .          .          .                  */
-        .          .          .          .          .          .                  .          .          .                 mapped_type&
-        .          .          .          .          .          .                  .          .          .                 operator[](const key_type& __k)
-        .          .          .          .          .          .                  .          .          .                 { return _M_h[__k]; }
-        .          .          .          .          .          .                  .          .          .           
-        .          .          .          .          .          .                  .          .          .                 mapped_type&
-        .          .          .          .          .          .                  .          .          .                 operator[](key_type&& __k)
-5,780,420 ( 0.17%) 2 ( 0.08%) 2 ( 0.08%) 0          0          0          2,023,267 ( 0.40%) 0          0                 { return _M_h[std::move(__k)]; }
-        .          .          .          .          .          .                  .          .          .                 ///@}
-        .          .          .          .          .          .                  .          .          .           
-        .          .          .          .          .          .                  .          .          .                 ///@{
-        .          .          .          .          .          .                  .          .          .                 /**
-        .          .          .          .          .          .                  .          .          .                  *  @brief  Access to %unordered_map data.
-        .          .          .          .          .          .                  .          .          .                  *  @param  __k  The key for which data should be retrieved.
-        .          .          .          .          .          .                  .          .          .                  *  @return  A reference to the data whose key is equal to @a __k, if
-        .          .          .          .          .          .                  .          .          .                  *           such a data is present in the %unordered_map.
--- line 992 ----------------------------------------
-
---------------------------------------------------------------------------------
--- Auto-annotated source: /home/juanb3ltran/Documentos/Universidad/Alto_rendimiento/Cream_drop/Main/main.cpp
---------------------------------------------------------------------------------
-Ir                  I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
-
-         .          .          .                   .          .          .                   .          .          .           #include "utils.hpp"
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .           
-        13 ( 0.00%) 2 ( 0.08%) 2 ( 0.08%)          2 ( 0.00%) 1 ( 0.01%) 0                   7 ( 0.00%) 0          0           int main(int argc, char *argv[]) {
-         .          .          .                   .          .          .                   .          .          .               //Declara variables
-         .          .          .                   .          .          .                   .          .          .               int t_final, N_particles, divisions, seed;    
-         .          .          .                   .          .          .                   .          .          .               double size, x_min, x_max, y_min, y_max;
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .               //lee el input asumiendo que cada valor tiene un comentario (que debe ser ignorado)
-        10 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 1 ( 0.04%) 0               std::cin >> N_particles; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-         4 ( 0.00%) 0          0                   0          0          0                   1 ( 0.00%) 0          0               std::cin >> size; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-         7 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 0          0               std::cin >> t_final; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-         7 ( 0.00%) 0          0                   0          0          0                   2 ( 0.00%) 0          0               std::cin >> divisions; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-         7 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   2 ( 0.00%) 0          0               std::cin >> seed; std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .               // limites del contenedor
-         4 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 1 ( 0.01%) 1 ( 0.01%)          2 ( 0.00%) 0          0               x_min=-size;
-         .          .          .                   .          .          .                   .          .          .               x_max=size;
-         .          .          .                   .          .          .                   .          .          .               y_min=-size;
-         .          .          .                   .          .          .                   .          .          .               y_max=size;
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .               //Crea el vector de particulas y el generador aleatorio
-         .          .          .                   .          .          .                   .          .          .               std::vector<Particle> balls;
-         .          .          .                   .          .          .                   .          .          .               std::mt19937 gen(seed);
-         .          .          .                   .          .          .                   .          .          .           
-         .          .          .                   .          .          .                   .          .          .               // Inicializa n objetos de la clase Particle y los añade al vector
-         5 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          2 ( 0.00%) 0          0                   1 ( 0.00%) 0          0               inicializar(balls, N_particles, size);
-         .          .          .                   .          .          .                   .          .          .               //grid entropy
-         .          .          .                   .          .          .                   .          .          .               std::unordered_map<int,int> grid_counts;
-     2,005 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)        400 ( 0.00%) 0          0                 400 ( 0.00%) 0          0               for (auto ball : balls){
-     5,600 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)      1,600 ( 0.00%) 0          0               1,600 ( 0.00%) 0          0                   counts(grid_counts, ball.getX(), ball.getY(), x_min, x_max, y_min, y_max, divisions);
-         .          .          .                   .          .          .                   .          .          .               }
-         4 ( 0.00%) 0          0                   1 ( 0.00%) 0          0                   2 ( 0.00%) 0          0               double entropy = compute_entropy(grid_counts, N_particles);
-         .          .          .                   .          .          .                   .          .          .              
-         .          .          .                   .          .          .                   .          .          .               int coin;
-18,000,005 ( 0.52%) 0          0           6,000,001 ( 0.72%) 0          0                   0          0          0               for (int i = 0; i < t_final; i++)
-         .          .          .                   .          .          .                   .          .          .               {
-         .          .          .                   .          .          .                   .          .          .                   
-30,000,000 ( 0.86%) 1 ( 0.04%) 1 ( 0.04%)  6,000,000 ( 0.72%) 0          0           6,000,000 ( 1.19%) 0          0                   coin = getRandomInt(N_particles-1, gen); //Selecciona que particula se movera
-         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Posicion antigua %%%%%%%%%%%%%
-18,000,000 ( 0.52%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double old_x = balls[coin].getX();
-12,000,000 ( 0.35%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double old_y = balls[coin].getY();
-48,000,000 ( 1.38%) 1 ( 0.04%) 1 ( 0.04%) 18,000,000 ( 2.17%) 0          0           6,000,000 ( 1.19%) 0          0                   balls[coin].moveRandom(1, x_min, x_max, y_min, y_max, gen);        
-         .          .          .                   .          .          .                   .          .          .                   
-         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Posicion actual %%%%%%%%%%%%%
-12,000,000 ( 0.35%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0          12,000,000 ( 2.37%) 0          0                   double new_x = balls[coin].getX();
-12,000,000 ( 0.35%) 0          0                   0          0          0           6,000,000 ( 1.19%) 0          0                   double new_y = balls[coin].getY();
-         .          .          .                   .          .          .                   .          .          .                   
-         .          .          .                   .          .          .                   .          .          .                   // %%%%%%%%%%%%% Calcula el cambio en la entropia (2 casos) %%%%%%%%%%%%%
-66,000,000 ( 1.90%) 1 ( 0.04%) 1 ( 0.04%) 30,000,000 ( 3.62%) 0          0           6,000,000 ( 1.19%) 0          0                   double ds = delta_entropy(grid_counts, new_x, new_y, x_min, x_max, y_min, y_max, divisions, old_x, old_y, N_particles);
-12,000,000 ( 0.35%) 0          0           6,000,000 ( 0.72%) 0          0           6,000,000 ( 1.19%) 0          0                   entropy += ds;
-         .          .          .                   .          .          .                   .          .          .                
-         .          .          .                   .          .          .                   .          .          .                   
-         .          .          .                   .          .          .                   .          .          .               }
-         .          .          .                   .          .          .                   .          .          .               std::cout<<"Entropía final: "<<entropy;
-         .          .          .                   .          .          .                   .          .          .               return 0;
-        15 ( 0.00%) 2 ( 0.08%) 1 ( 0.04%)         10 ( 0.00%) 1 ( 0.01%) 0                   1 ( 0.00%) 0          0           }
---------------------------------------------------------------------------------
--- Auto-annotated source: /usr/include/c++/11/bits/uniform_int_dist.h
---------------------------------------------------------------------------------
-Ir                   I1mr       ILmr       Dr                  D1mr       DLmr       Dw                  D1mw       DLmw       
-
--- line 185 ----------------------------------------
-          .          .          .                   .          .          .                   .          .          .                 { return this->b(); }
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .                 /**
-          .          .          .                   .          .          .                   .          .          .                  * @brief Generating functions.
-          .          .          .                   .          .          .                   .          .          .                  */
-          .          .          .                   .          .          .                   .          .          .                 template<typename _UniformRandomBitGenerator>
-          .          .          .                   .          .          .                   .          .          .           	result_type
-          .          .          .                   .          .          .                   .          .          .           	operator()(_UniformRandomBitGenerator& __urng)
- 54,269,811 ( 1.56%) 0          0                   0          0          0          12,059,958 ( 2.39%) 0          0                   { return this->operator()(__urng, _M_param); }
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .                 template<typename _UniformRandomBitGenerator>
-          .          .          .                   .          .          .                   .          .          .           	result_type
-          .          .          .                   .          .          .                   .          .          .           	operator()(_UniformRandomBitGenerator& __urng,
-          .          .          .                   .          .          .                   .          .          .           		   const param_type& __p);
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .                 template<typename _ForwardIterator,
-          .          .          .                   .          .          .                   .          .          .           	       typename _UniformRandomBitGenerator>
--- line 201 ----------------------------------------
--- line 250 ----------------------------------------
-          .          .          .                   .          .          .                   .          .          .           	  static_assert(!_Up_traits::__is_signed, "U must be unsigned");
-          .          .          .                   .          .          .                   .          .          .           	  static_assert(!_Wp_traits::__is_signed, "W must be unsigned");
-          .          .          .                   .          .          .                   .          .          .           	  static_assert(_Wp_traits::__digits == (2 * _Up_traits::__digits),
-          .          .          .                   .          .          .                   .          .          .           			"W must be twice as wide as U");
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .           	  // reference: Fast Random Integer Generation in an Interval
-          .          .          .                   .          .          .                   .          .          .           	  // ACM Transactions on Modeling and Computer Simulation 29 (1), 2019
-          .          .          .                   .          .          .                   .          .          .           	  // https://arxiv.org/abs/1805.10941
- 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	  _Wp __product = _Wp(__g()) * _Wp(__range);
-          .          .          .                   .          .          .                   .          .          .           	  _Up __low = _Up(__product);
- 36,119,916 ( 1.04%) 0          0                   0          0          0                   0          0          0           	  if (__low < __range)
-          .          .          .                   .          .          .                   .          .          .           	    {
-          .          .          .                   .          .          .                   .          .          .           	      _Up __threshold = -__range % __range;
-          .          .          .                   .          .          .                   .          .          .           	      while (__low < __threshold)
-          .          .          .                   .          .          .                   .          .          .           		{
-          .          .          .                   .          .          .                   .          .          .           		  __product = _Wp(__g()) * _Wp(__range);
-          .          .          .                   .          .          .                   .          .          .           		  __low = _Up(__product);
-          .          .          .                   .          .          .                   .          .          .           		}
-          .          .          .                   .          .          .                   .          .          .           	    }
- 30,119,916 ( 0.87%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0                   0          0          0           	  return __product >> _Up_traits::__digits;
-          .          .          .                   .          .          .                   .          .          .           	}
-          .          .          .                   .          .          .                   .          .          .               };
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .             template<typename _IntType>
-          .          .          .                   .          .          .                   .          .          .               template<typename _UniformRandomBitGenerator>
-          .          .          .                   .          .          .                   .          .          .                 typename uniform_int_distribution<_IntType>::result_type
-120,599,580 ( 3.47%) 1 ( 0.04%) 1 ( 0.04%)          0          0          0          72,359,748 (14.31%) 0          0                 uniform_int_distribution<_IntType>::
-          .          .          .                   .          .          .                   .          .          .                 operator()(_UniformRandomBitGenerator& __urng,
-          .          .          .                   .          .          .                   .          .          .           		 const param_type& __param)
-          .          .          .                   .          .          .                   .          .          .                 {
-          .          .          .                   .          .          .                   .          .          .           	typedef typename _UniformRandomBitGenerator::result_type _Gresult_type;
-          .          .          .                   .          .          .                   .          .          .           	typedef typename make_unsigned<result_type>::type __utype;
-          .          .          .                   .          .          .                   .          .          .           	typedef typename common_type<_Gresult_type, __utype>::type __uctype;
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngmin = _UniformRandomBitGenerator::min();
-          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngmax = _UniformRandomBitGenerator::max();
-          .          .          .                   .          .          .                   .          .          .           	static_assert( __urngmin < __urngmax,
-          .          .          .                   .          .          .                   .          .          .           	    "Uniform random bit generator must define min() < max()");
-          .          .          .                   .          .          .                   .          .          .           	constexpr __uctype __urngrange = __urngmax - __urngmin;
-          .          .          .                   .          .          .                   .          .          .           
- 12,059,958 ( 0.35%) 0          0                   0          0          0                   0          0          0           	const __uctype __urange
- 12,059,958 ( 0.35%) 0          0                   0          0          0                   0          0          0           	  = __uctype(__param.b()) - __uctype(__param.a());
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .           	__uctype __ret;
- 54,179,874 ( 1.56%) 0          0                   0          0          0                   0          0          0           	if (__urngrange > __urange)
-          .          .          .                   .          .          .                   .          .          .           	  {
-          .          .          .                   .          .          .                   .          .          .           	    // downscaling
-          .          .          .                   .          .          .                   .          .          .           
- 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	    const __uctype __uerange = __urange + 1; // __urange can be zero
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .           #if defined __UINT64_TYPE__ && defined __UINT32_TYPE__
-          .          .          .                   .          .          .                   .          .          .           #if __SIZEOF_INT128__
-          .          .          .                   .          .          .                   .          .          .           	    if _GLIBCXX17_CONSTEXPR (__urngrange == __UINT64_MAX__)
-          .          .          .                   .          .          .                   .          .          .           	      {
-          .          .          .                   .          .          .                   .          .          .           		// __urng produces values that use exactly 64-bits,
-          .          .          .                   .          .          .                   .          .          .           		// so use 128-bit integers to downscale to desired range.
-          .          .          .                   .          .          .                   .          .          .           		__UINT64_TYPE__ __u64erange = __uerange;
--- line 306 ----------------------------------------
--- line 307 ----------------------------------------
-          .          .          .                   .          .          .                   .          .          .           		__ret = _S_nd<unsigned __int128>(__urng, __u64erange);
-          .          .          .                   .          .          .                   .          .          .           	      }
-          .          .          .                   .          .          .                   .          .          .           	    else
-          .          .          .                   .          .          .                   .          .          .           #endif
-          .          .          .                   .          .          .                   .          .          .           	    if _GLIBCXX17_CONSTEXPR (__urngrange == __UINT32_MAX__)
-          .          .          .                   .          .          .                   .          .          .           	      {
-          .          .          .                   .          .          .                   .          .          .           		// __urng produces values that use exactly 32-bits,
-          .          .          .                   .          .          .                   .          .          .           		// so use 64-bit integers to downscale to desired range.
- 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           		__UINT32_TYPE__ __u32erange = __uerange;
-          .          .          .                   .          .          .                   .          .          .           		__ret = _S_nd<__UINT64_TYPE__>(__urng, __u32erange);
-          .          .          .                   .          .          .                   .          .          .           	      }
-          .          .          .                   .          .          .                   .          .          .           	    else
-          .          .          .                   .          .          .                   .          .          .           #endif
-          .          .          .                   .          .          .                   .          .          .           	      {
-          .          .          .                   .          .          .                   .          .          .           		// fallback case (2 divisions)
-          .          .          .                   .          .          .                   .          .          .           		const __uctype __scaling = __urngrange / __uerange;
-          .          .          .                   .          .          .                   .          .          .           		const __uctype __past = __uerange * __scaling;
--- line 323 ----------------------------------------
--- line 352 ----------------------------------------
-          .          .          .                   .          .          .                   .          .          .           			 (__urng, param_type(0, __urange / __uerngrange)));
-          .          .          .                   .          .          .                   .          .          .           		__ret = __tmp + (__uctype(__urng()) - __urngmin);
-          .          .          .                   .          .          .                   .          .          .           	      }
-          .          .          .                   .          .          .                   .          .          .           	    while (__ret > __urange || __ret < __tmp);
-          .          .          .                   .          .          .                   .          .          .           	  }
-          .          .          .                   .          .          .                   .          .          .           	else
-          .          .          .                   .          .          .                   .          .          .           	  __ret = __uctype(__urng()) - __urngmin;
-          .          .          .                   .          .          .                   .          .          .           
- 18,059,958 ( 0.52%) 0          0                   0          0          0                   0          0          0           	return __ret + __param.a();
- 96,479,664 ( 2.78%) 0          0          84,419,706 (10.17%) 0          0                   0          0          0                 }
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .           
-          .          .          .                   .          .          .                   .          .          .             template<typename _IntType>
-          .          .          .                   .          .          .                   .          .          .               template<typename _ForwardIterator,
-          .          .          .                   .          .          .                   .          .          .           	     typename _UniformRandomBitGenerator>
-          .          .          .                   .          .          .                   .          .          .                 void
-          .          .          .                   .          .          .                   .          .          .                 uniform_int_distribution<_IntType>::
-          .          .          .                   .          .          .                   .          .          .                 __generate_impl(_ForwardIterator __f, _ForwardIterator __t,
--- line 369 ----------------------------------------
 
 --------------------------------------------------------------------------------
 The following files chosen for auto-annotation could not be found:

@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
             meanTime += simulation(t_final, N_particles, divisions, seed, size);
         }
         meanTime /= times2Repeat;
-        dataDiv<< divisions <<"\t"<< meanTime <<"\n";
+        dataDiv<< divisions*divisions <<"\t"<< meanTime <<"\n";
     }
     dataDiv.close();
 

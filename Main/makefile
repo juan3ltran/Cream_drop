@@ -21,9 +21,6 @@ all: $(TARGET)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Ejecutar el programa principal
-run: $(TARGET)
-	./$(TARGET)
-
 main.x: main.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o main.x
 	./main.x<./inputs/input.txt
@@ -45,7 +42,7 @@ punto4.x: punto4.o $(OBJ)
 	./punto4.x > data/punto4.dat
 
 t_computo.x:
-	echo "\n Esto puede tardar aproximadamente 30 minutos \n"
+	@echo "\n Esto puede tardar aproximadamente 30 minutos \n"
 	$(CC) -g -c t_computo.cpp utils.cpp
 	$(CC) -g t_computo.o utils.o -o t_computo.x 
 	./t_computo.x no3
