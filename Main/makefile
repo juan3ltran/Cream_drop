@@ -26,7 +26,7 @@ run: $(TARGET)
 
 main.x: main.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o main.x
-	./main.x<./inputs/input.txt>data/main.dat
+	./main.x<./inputs/input.txt
 # Nuevo objetivo para punto2
 punto1.x: punto1.o $(OBJ)
 	$(CC) $(CFLAGS) $^ -o punto1.x
