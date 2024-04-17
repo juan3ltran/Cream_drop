@@ -4,8 +4,6 @@ Welcome to the Cream Drop repository. This project uses a Makefile for streamlin
 
 ## Features
 
-## Features
-
 - Efficient compilation and execution of project modules.
 - Automated testing and performance reporting.
 - Visualization of results using Python scripts.
